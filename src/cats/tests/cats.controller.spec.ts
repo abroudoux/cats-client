@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 
-import { CatsController } from './cats.controller';
+import { CatsController } from '../controllers/cats.controller';
 
 
 describe('CatsController', () => {
