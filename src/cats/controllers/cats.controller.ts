@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, NotFoundException, Param, ParseIntPipe, Post, Put, Query, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 
 import { CreateCatDto } from '../dto/create-cat.dto';
 import { UpdateCatDto } from '../dto/update-cat.dto';
@@ -19,36 +19,26 @@ export class CatsController {
 
     // GET /cats/:id -> { ... }
     @Get(':id')
-    getCat(@Param('id') id) : Promise<Cat> {
+    getCat(@Param('id') id : string) : Promise<Cat> {
         return this.catsService.getCat(id);
     };
 
-    // // GET /cats/:id -> { ... }
-    // @Get(':id')
-    // getOneCat(@Param('id', ParseIntPipe) id : number) {
-    //     try {
-    //         return this.catsService.getCat(id);
-    //     } catch (err) {
-    //         throw new NotFoundException();
-    //     };
-    // };
+    // POST /cats
+    @Post()
+    createCat(@Body() createCatDto : CreateCatDto) : Promise<Cat> {
+        return this.catsService.createCat(createCatDto);
+    };
 
-    // // POST /cats
-    // @Post()
-    // createCat(@Body(new ValidationPipe()) createCatDto : CreateCatDto) {
-    //     return this.catsService.createCat(createCatDto);
-    // };
+    // DELETE /cats/:id
+    @Delete(':id')
+    deleteCat(@Param('id') id : string) : Promise<Cat> {
+        return this.catsService.deleteCat(id);
+    };
 
-    // // PUT /cats/:id -> { ... }
-    // @Put(':id')
-    // updateCat(@Param('id') id : number, @Body() updateCatDto : UpdateCatDto) {
-    //     return this.catsService.updateCat(id, updateCatDto);
-    // };
-
-    // // DELETE /cats/:id
-    // @Delete(':id')
-    // deleteCat(@Param('id', ParseIntPipe) id : number) {
-    //     return this.catsService.removeCat(id);
-    // };
+    // PUT /cats/:id
+    @Put(':id')
+    updateCat(@Body() updateCatDto : CreateCatDto, @Param('id') id : string) : Promise<Cat> {
+        return this.catsService.updateCat(id, updateCatDto);
+    };
 
 };
