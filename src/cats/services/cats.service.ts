@@ -21,6 +21,10 @@ export class CatsService {
         return await this.catModel.find();
     };
 
+    async getCat(id : string) : Promise<Cat> {
+        return await this.catModel.findOne({ _id : id });
+    }
+
     // getCat(id : number) {
     //     const cat = this.cats.find((cat) => cat.id === id);
 

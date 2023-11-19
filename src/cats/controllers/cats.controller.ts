@@ -17,6 +17,12 @@ export class CatsController {
         return this.catsService.getCats();
     };
 
+    // GET /cats/:id -> { ... }
+    @Get(':id')
+    getCat(@Param('id') id) : Promise<Cat> {
+        return this.catsService.getCat(id);
+    };
+
     // // GET /cats/:id -> { ... }
     // @Get(':id')
     // getOneCat(@Param('id', ParseIntPipe) id : number) {
