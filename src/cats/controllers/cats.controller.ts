@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, NotFoundException, Param, ParseIntPipe, Post, Put, Query, UseGuards, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, NotFoundException, Param, ParseIntPipe, Post, Put, Query, ValidationPipe } from '@nestjs/common';
 
 import { CreateCatDto } from '../dto/create-cat.dto';
 import { UpdateCatDto } from '../dto/update-cat.dto';
@@ -35,8 +35,8 @@ export class CatsController {
 
     // PUT /cats/:id -> { ... }
     @Put(':id')
-    updateCat(@Param('id') id : string, @Body() updateCatDto : UpdateCatDto) {
-        return this.catsService.updateCat(+id, updateCatDto);
+    updateCat(@Param('id') id : number, @Body() updateCatDto : UpdateCatDto) {
+        return this.catsService.updateCat(id, updateCatDto);
     };
 
     // DELETE /cats/:id

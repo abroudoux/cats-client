@@ -47,7 +47,7 @@ export class CatsService {
 
         this.cats = this.cats.map((cat) => {
             if (cat.id === id) {
-                return { ...cat, ...updateCatDto }
+                return { ...cat, ...updateCatDto };
             };
 
             return cat;
