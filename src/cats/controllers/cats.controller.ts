@@ -3,7 +3,6 @@ import { Body, Controller, Delete, Get, NotFoundException, Param, ParseIntPipe, 
 import { CreateCatDto } from '../dto/create-cat.dto';
 import { UpdateCatDto } from '../dto/update-cat.dto';
 import { CatsService } from '../services/cats.service';
-import { GardenGuard } from '../guards/garden.guard';
 
 
 @Controller('cats')
@@ -30,7 +29,6 @@ export class CatsController {
 
     // POST /cats
     @Post()
-    @UseGuards(GardenGuard)
     createCat(@Body(new ValidationPipe()) createCatDto : CreateCatDto) {
         return this.catsService.createCat(createCatDto);
     };
