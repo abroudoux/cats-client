@@ -3,6 +3,7 @@ import { Body, Controller, Delete, Get, NotFoundException, Param, ParseIntPipe, 
 import { CreateCatDto } from '../dto/create-cat.dto';
 import { UpdateCatDto } from '../dto/update-cat.dto';
 import { CatsService } from '../services/cats.service';
+import { Cat } from '../interfaces/cat.interface';
 
 
 @Controller('cats')
@@ -12,37 +13,36 @@ export class CatsController {
 
     // GET /cats?color= -> []
     @Get()
-    getcats(@Query('color') color : 'black' | 'brown') {
-        const service = new CatsService();
-        return this.catsService.getCats(color);
+    getcats() : Promise<Cat[]> {
+        return this.catsService.getCats();
     };
 
-    // GET /cats/:id -> { ... }
-    @Get(':id')
-    getOneCat(@Param('id', ParseIntPipe) id : number) {
-        try {
-            return this.catsService.getCat(id);
-        } catch (err) {
-            throw new NotFoundException();
-        };
-    };
+    // // GET /cats/:id -> { ... }
+    // @Get(':id')
+    // getOneCat(@Param('id', ParseIntPipe) id : number) {
+    //     try {
+    //         return this.catsService.getCat(id);
+    //     } catch (err) {
+    //         throw new NotFoundException();
+    //     };
+    // };
 
-    // POST /cats
-    @Post()
-    createCat(@Body(new ValidationPipe()) createCatDto : CreateCatDto) {
-        return this.catsService.createCat(createCatDto);
-    };
+    // // POST /cats
+    // @Post()
+    // createCat(@Body(new ValidationPipe()) createCatDto : CreateCatDto) {
+    //     return this.catsService.createCat(createCatDto);
+    // };
 
-    // PUT /cats/:id -> { ... }
-    @Put(':id')
-    updateCat(@Param('id') id : number, @Body() updateCatDto : UpdateCatDto) {
-        return this.catsService.updateCat(id, updateCatDto);
-    };
+    // // PUT /cats/:id -> { ... }
+    // @Put(':id')
+    // updateCat(@Param('id') id : number, @Body() updateCatDto : UpdateCatDto) {
+    //     return this.catsService.updateCat(id, updateCatDto);
+    // };
 
-    // DELETE /cats/:id
-    @Delete(':id')
-    deleteCat(@Param('id', ParseIntPipe) id : number) {
-        return this.catsService.removeCat(id);
-    };
+    // // DELETE /cats/:id
+    // @Delete(':id')
+    // deleteCat(@Param('id', ParseIntPipe) id : number) {
+    //     return this.catsService.removeCat(id);
+    // };
 
 };

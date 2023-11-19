@@ -1,67 +1,67 @@
 import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 
 import { CreateCatDto } from '../dto/create-cat.dto';
 import { UpdateCatDto } from '../dto/update-cat.dto';
+import { Cat } from '../interfaces/cat.interface';
 
 
 @Injectable()
 export class CatsService {
 
-    private cats = [
-        { id : 0, name : 'Marius', color : 'black' },
-        { id : 1, name : 'Felix', color : 'brown' }
-    ];
+    constructor(@InjectModel('Cat') private readonly catModel : Model<Cat>) {}
 
-    getCats(color ? : 'black' | 'brown') {
+    // private cats = [
+    //     { id : 0, name : 'Marius', color : 'black' },
+    //     { id : 1, name : 'Felix', color : 'brown' }
+    // ];
 
-        if (color) {
-            return this.cats.filter((cats) => cats.color === color)
-        };
-
-        return this.cats;
+    async getCats() : Promise<Cat[]> {
+        return await this.catModel.find();
     };
 
-    getCat(id : number) {
-        const cat = this.cats.find((cat) => cat.id === id);
+    // getCat(id : number) {
+    //     const cat = this.cats.find((cat) => cat.id === id);
 
-        if (!cat) {
-            throw new Error('cat not found');
-        };
+    //     if (!cat) {
+    //         throw new Error('cat not found');
+    //     };
 
-        return cat;
-    };
+    //     return cat;
+    // };
 
-    createCat(createCatDto : CreateCatDto) {
+    // createCat(createCatDto : CreateCatDto) {
 
-        const newCat = {
-            ...createCatDto,
-            id : Date.now(),
-        };
+    //     const newCat = {
+    //         ...createCatDto,
+    //         id : Date.now(),
+    //     };
 
-        this.cats.push(newCat);
+    //     this.cats.push(newCat);
 
-        return newCat;
-    };
+    //     return newCat;
+    // };
 
-    updateCat(id : number, updateCatDto : UpdateCatDto) {
+    // updateCat(id : number, updateCatDto : UpdateCatDto) {
 
-        this.cats = this.cats.map((cat) => {
-            if (cat.id === id) {
-                return { ...cat, ...updateCatDto };
-            };
+    //     this.cats = this.cats.map((cat) => {
+    //         if (cat.id === id) {
+    //             return { ...cat, ...updateCatDto };
+    //         };
 
-            return cat;
-        });
+    //         return cat;
+    //     });
 
-        return this.getCat(id);
-    };
+    //     return this.getCat(id);
+    // };
 
-    removeCat(id : number) {
-        const toBeRemoved = this.getCat(id);
+    // removeCat(id : number) {
+    //     const toBeRemoved = this.getCat(id);
 
-        this.cats = this.cats.filter((cat) => cat.id !== id);
+    //     this.cats = this.cats.filter((cat) => cat.id !== id);
 
-        return toBeRemoved;
-    };
+    //     return toBeRemoved;
+    // };
 
 };
