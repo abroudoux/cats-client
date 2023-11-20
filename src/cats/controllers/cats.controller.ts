@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
 
 import { CreateCatDto } from '../dto/create-cat.dto';
 import { UpdateCatDto } from '../dto/update-cat.dto';
@@ -13,8 +13,8 @@ export class CatsController {
 
     // GET /cats?color= -> []
     @Get()
-    getcats() : Promise<Cat[]> {
-        return this.catsService.getCats();
+    async getCats(@Query('isAdopted') isAdopted ? : boolean) : Promise<Cat[]> {
+        return await this.catsService.getCats(isAdopted);
     };
 
     // GET /cats/:id -> { ... }

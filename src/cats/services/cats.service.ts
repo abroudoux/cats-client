@@ -10,8 +10,9 @@ export class CatsService {
 
     constructor(@InjectModel('Cat') private readonly catModel : Model<Cat>) {}
 
-    async getCats() : Promise<Cat[]> {
-        return await this.catModel.find();
+    async getCats(isAdopted ? : boolean) : Promise<Cat[]> {
+        const filter = isAdopted !== undefined ? { isAdopted } : {};
+        return await this.catModel.find(filter);
     };
 
     async getCat(id : string) : Promise<Cat> {
