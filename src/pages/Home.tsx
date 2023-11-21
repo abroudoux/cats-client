@@ -1,7 +1,4 @@
-import React from 'react';
-
-import CreateCat from '../components/CreateCat';
-import { ModeToggle } from '@/components/mode-toggle';
+import CreateCat from '@/components/CreateCat';
 
 
 export default function Home() {
@@ -11,9 +8,8 @@ export default function Home() {
 		<section>
 
 			<CreateCat />
-			<ModeToggle />
 
 		</section>
-  	)
+  	);
 
-}
+};
