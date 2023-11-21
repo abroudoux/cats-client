@@ -1,13 +1,10 @@
-import CreateCat from '@/components/CreateCat';
-
-
 export default function Home() {
 
 	return (
 
 		<section>
 
-			<CreateCat />
+			<h1>Home</h1>
 
 		</section>
   	);
