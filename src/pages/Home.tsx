@@ -1,6 +1,7 @@
 import React from 'react';
 
-import HelloWorld from '../components/HelloWorld';
+import CreateCat from '../components/CreateCat';
+import { ModeToggle } from '@/components/mode-toggle';
 
 
 export default function Home() {
@@ -9,8 +10,8 @@ export default function Home() {
 
 		<section>
 
-			<h1>Home</h1>
-			<HelloWorld />
+			<CreateCat />
+			<ModeToggle />
 
 		</section>
   	)

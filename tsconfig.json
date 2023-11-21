@@ -5,7 +5,8 @@
             "DOM", "DOM.Iterable", "ESNext"
         ],
         "types": [
-            "vite/client", "@testing-library/jest-dom"
+            "vite/client", 
+            "@testing-library/jest-dom"
         ],
         "allowJs": true,
         "skipLibCheck": true,
