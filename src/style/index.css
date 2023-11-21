@@ -3,6 +3,10 @@
 @tailwind utilities;
 
 
+.page {
+  @apply w-full h-screen flex-col-center py-20;
+}
+
 .flex-col-center {
   @apply flex flex-col items-center;
 }

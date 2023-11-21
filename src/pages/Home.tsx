@@ -2,7 +2,7 @@ export default function Home() {
 
 	return (
 
-		<section>
+		<section className="page">
 
 			<h1>Home</h1>
 
