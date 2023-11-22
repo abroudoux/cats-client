@@ -37,7 +37,7 @@ export class CatsController {
 
     // PUT /cats/:id
     @Put(':id')
-    updateCat(@Body() updateCatDto : CreateCatDto, @Param('id') id : string) : Promise<Cat> {
+    updateCat(@Body() updateCatDto : UpdateCatDto, @Param('id') id : string) : Promise<Cat> {
         return this.catsService.updateCat(id, updateCatDto);
     };
 
