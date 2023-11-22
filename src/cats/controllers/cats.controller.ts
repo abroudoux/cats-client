@@ -1,9 +1,9 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
 
-import { CreateCatDto } from '../dto/create-cat.dto';
-import { UpdateCatDto } from '../dto/update-cat.dto';
-import { CatsService } from '../services/cats.service';
-import { Cat } from '../interfaces/cat.interface';
+import { CreateCatDto } from '@/cats/dto/create-cat.dto';
+import { UpdateCatDto } from '@/cats/dto/update-cat.dto';
+import { CatsService } from '@/cats/services/cats.service';
+import { Cat } from '@/cats/interfaces/cat.interface';
 
 
 @Controller('cats')
