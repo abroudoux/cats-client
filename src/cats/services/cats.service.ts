@@ -32,7 +32,7 @@ export class CatsService {
     };
 
     async deleteCat(id : string) : Promise<Cat> {
-        return await this.catModel.findByIdAndRemove(id);
+        return await this.catModel.findByIdAndDelete(id);
     };
 
     async updateCat(id : string, cat : Cat) : Promise<Cat> {
