@@ -3,7 +3,7 @@ import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/
 import { CreateCatDto } from '@/cats/dto/create-cat.dto';
 import { UpdateCatDto } from '@/cats/dto/update-cat.dto';
 import { CatsService } from '@/cats/services/cats.service';
-import { Cat } from '@/cats/interfaces/cat.interface';
+import { Cat } from '@/cats/models/cat.model';
 
 
 @Controller('cats')
@@ -11,7 +11,7 @@ export class CatsController {
 
     constructor(private readonly catsService : CatsService) {};
 
-    // GET /cats?color= -> []
+    // GET /cats?isAdopted= -> []
     @Get()
     async getCats(@Query('isAdopted') isAdopted ? : boolean) : Promise<Cat[]> {
         return await this.catsService.getCats(isAdopted);

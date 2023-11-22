@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
-import { Cat } from '@/cats/interfaces/cat.interface';
+import { Cat } from '@/cats/models/cat.model';
 
 
 @Injectable()
@@ -16,7 +16,14 @@ export class CatsService {
     };
 
     async getCat(id : string) : Promise<Cat> {
-        return await this.catModel.findOne({ _id : id });
+
+        const cat = await this.catModel.findById({ _id : id });
+
+        if (!cat) {
+            throw new NotFoundException('Cat not found');
+        };
+
+        return cat;
     };
 
     async createCat(cat : Cat) : Promise<Cat> {
