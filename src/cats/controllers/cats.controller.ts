@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query } from '@nestjs/common';
 
 import { CreateCatDto } from '@/cats/dto/create-cat.dto';
 import { UpdateCatDto } from '@/cats/dto/update-cat.dto';

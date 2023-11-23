@@ -1,6 +1,6 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 
 import { Cat } from '@/cats/models/cat.model';
 
@@ -16,6 +16,12 @@ export class CatsService {
     };
 
     async getCat(id : string) : Promise<Cat> {
+
+        const isValidId = mongoose.isValidObjectId(id);
+
+        if (!isValidId) {
+            throw new BadRequestException('Enter a valid id');
+        };
 
         const cat = await this.catModel.findById({ _id : id });
 
