@@ -1,6 +1,6 @@
 import { IsBoolean, IsEnum, IsNotEmpty, IsString } from 'class-validator';
 
-import { Owner } from '@/cats/models/cat.model';
+// import { Owner } from '@/cats/models/cat.model';
 
 
 export class CreateCatDto {
@@ -17,7 +17,7 @@ export class CreateCatDto {
     @IsBoolean()
     readonly isAdopted : boolean;
 
-    @IsNotEmpty()
-    @IsEnum(Owner, { message : 'Please select the owner\'s cat' })
-    readonly owner : Owner;
+    // @IsNotEmpty()
+    // @IsEnum(Owner, { message : 'Please select the owner\'s cat' })
+    // readonly owner : Owner;
 };
