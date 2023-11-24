@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { cn } from '@/lib/utils';
 
@@ -13,6 +13,30 @@ import { useToast } from '@/components/ui/use-toast';
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export default function UserAuthForm({ className, ...props } : UserAuthFormProps) {
+
+    const [name, setName] = useState('');
+    const [message, setMessage] = useState("");
+
+    let handleSubmit = async (e: { preventDefault: () => void; }) => {
+        e.preventDefault();
+        try {
+            let res = await fetch("http://localhost:9090/users/", {
+                method: "POST",
+                body: JSON.stringify({
+                    name: name,
+                }),
+            });
+            let resJson = await res.json();
+            if (res.status === 200) {
+                setName("");
+                setMessage("User created successfully");
+            } else {
+                setMessage("Some error occured");
+            };
+        } catch (err) {
+            console.log(err);
+        }
+    };
 
     const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
@@ -35,7 +59,7 @@ export default function UserAuthForm({ className, ...props } : UserAuthFormProps
                 <div className="grid gap-2">
                     <div className="grid gap-1">
                         <Label className="sr-only" htmlFor="email">Email</Label>
-                        <Input id="email" placeholder="name@example.com" type="email" autoCapitalize="none" autoComplete="off" autoCorrect="off" disabled={isLoading} />
+                        <Input id="email" placeholder="name@example.com" type="name" autoCapitalize="none" autoComplete="off" autoCorrect="off" value={name} disabled={isLoading} onChange={(e) => setName(e.target.value)} />
                     </div>
                     <Button disabled={isLoading}>
                         {isLoading && (
@@ -43,6 +67,7 @@ export default function UserAuthForm({ className, ...props } : UserAuthFormProps
                         )}
                         Sign In
                     </Button>
+                    <div className="message">{message ? <p>{message}</p> : null}</div>
                 </div>
             </form>
             <div className="relative">
