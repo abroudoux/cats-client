@@ -9,11 +9,11 @@ import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 export default function Footer() {
 
     return (
-        <footer className="w-full h-20 border-t-2 px-5 flex-row-center-between">
+        <footer className="w-full h-20 border-t-[1px] px-5 flex-row-center-between">
             <p>© 2023-present
                 <HoverCard>
                     <HoverCardTrigger asChild>
-                        <Button variant="link">@abroudoux</Button>
+                        <Button variant="link"><a href="https://github.com/abroudoux" target="_blank">@abroudoux</a></Button>
                     </HoverCardTrigger>
                     <HoverCardContent className="w-80">
                         <div className="flex justify-between space-x-4">
@@ -24,7 +24,7 @@ export default function Footer() {
                             <div className="space-y-1">
                                 <h4 className="text-sm font-semibold">@abroudoux</h4>
                                 <p className="text-sm">
-                                    Arthur Broudoux - Web Developer, creative coder
+                                    Web Developer, creative coder & cats enjoyer
                                 </p>
                                 <div className="flex items-center pt-2">
                                     <span className="text-xs text-muted-foreground">
