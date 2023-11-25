@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { ChangeEvent, FormEventHandler, useEffect, useState } from 'react';
 
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
@@ -6,13 +6,15 @@ import { Label } from '@/components/ui/label';
 import { CardCat } from '@/components/CardCat';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useToast } from '@/components/ui/use-toast';
+import { ToastAction } from '@/components/ui/toast';
 
 
 interface Cat {
 	id : string,
 	name : string,
 	color : string
-	// isAdopted : boolean,
+	isAdopted : boolean,
 };
 
 
@@ -27,6 +29,9 @@ export default function Home() {
 
 	const [name, setName] = useState('');
 	const [color, setColor] = useState('');
+	// const [isAdopted, setIsAdopted] = useState('');
+
+	const { toast } = useToast();
 
 	const handleCreateCat = async () => {
 		try {
@@ -36,6 +41,7 @@ export default function Home() {
 			  		'Content-Type': 'application/json',
 				},
 				body: JSON.stringify({ name, color }),
+				// body: JSON.stringify({ name, color, isAdopted: isAdopted === 'true' }),
 		  	});
 
 		  	if (!response.ok) {
@@ -44,22 +50,29 @@ export default function Home() {
 
 		  	const newCat = (await response.json()) as Cat;
 		  	setCats((prevCats) => [...prevCats, newCat]);
+
+			toast({title: "Cat successfully created !", action: (<ToastAction altText="Goto schedule to undo">Undo</ToastAction>),});
+
 		} catch (e) {
 		  	console.log(e);
+			toast({title: "Error while cat creation", description: "Try again", action: (<ToastAction altText="Understand">OK</ToastAction>),});
 		};
 	};
 
-	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		switch (event.target.id) {
+	const handleChange = (e : React.ChangeEvent<HTMLInputElement>) => {
+		switch (e.target.id) {
 			case 'name':
-			setName(event.target.value);
+				setName(e.target.value);
 			break;
 			case 'color':
-			setColor(event.target.value);
+				setColor(e.target.value);
 			break;
+			// case 'isAdopted':
+			// 	setIsAdopted(e.target.value);
+			// break;
 			default:
 			break;
-		}
+		};
 	};
 
 	useEffect(() => {
@@ -100,8 +113,7 @@ export default function Home() {
 			</ul>
 			<div className="flex-row-center-between gap-3">
 				<p className="text-lg">Add a new cat ?</p>
-				<Dialog>
-					{/* <form onSubmit={handleSubmit}> */}
+				<Dialog {...Dialog}>
 						<DialogTrigger asChild>
 							<Button variant="outline">Create</Button>
 						</DialogTrigger>
@@ -119,16 +131,12 @@ export default function Home() {
 									<Input id="color" placeholder="Which color is it?" className="col-span-3" value={color} onChange={handleChange} />
 								</div>
 								{/* <div className="grid grid-cols-4 items-center gap-4">
-									<Label htmlFor="isAdopted" className="text-right">Status</Label>
-									<Input id="isAdopted" placeholder="Which color is it?" className="col-span-3" value={formData.isAdopted} onChange={handleChange} />
-								</div> */}
-								{/* <div className="grid grid-cols-4 items-center gap-4">
 									<Label htmlFor="status" className="text-right">Status</Label>
 									<Select>
-										<SelectTrigger id="status">
+										<SelectTrigger id="isAdopted">
 											<SelectValue placeholder="Select" />
 										</SelectTrigger>
-										<SelectContent position="popper" value={checked.isAdopted} onChange={handleChange}>
+										<SelectContent position="popper" value={isAdopted} onChange={(e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => handleChange(e)}>
 											<SelectItem value="true">Adopted</SelectItem>
 											<SelectItem value="false">Not Adopted</SelectItem>
 										</SelectContent>
@@ -136,10 +144,9 @@ export default function Home() {
 								</div> */}
 							</div>
 							<DialogFooter>
-								<Button type="submit" onClick={handleCreateCat}>Create</Button>
+									<Button type="submit" onClick={handleCreateCat}>Create</Button>
 							</DialogFooter>
 						</DialogContent>
-					{/* </form> */}
     			</Dialog>
 			</div>
 
