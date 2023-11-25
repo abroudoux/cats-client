@@ -5,7 +5,7 @@ import Home from './pages/Home';
 import Create from './pages/Create';
 import Login from './pages/Login';
 
-import { ThemeProvider } from '@/components/theme-provider';
+import { ThemeProvider } from '@/components/config/theme-provider';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Toaster } from '@/components/ui/toaster';
@@ -19,7 +19,6 @@ const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 			<Header />
 			<Routes>
 					<Route path="/" element={<Home />}></Route>
-					<Route path="/cats" element={<Create /> }></Route>
 					<Route path="/users" element={<Login /> }></Route>
 			</Routes>
 			<Footer />

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { cn } from '@/lib/utils';
 
@@ -13,6 +13,37 @@ import { useToast } from '@/components/ui/use-toast';
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export default function UserAuthForm({ className, ...props } : UserAuthFormProps) {
+
+	const BASE_URL = "http://localhost:9090"
+
+    const [users, setUsers] = useState([]);
+    const [name, setName] = useState('');
+    const [body, setBody] = useState('');
+    const [message, setMessage] = useState('');
+
+    const handleSubmit = async (e: { preventDefault: () => void; }) => {
+        e.preventDefault();
+        fetch(`${BASE_URL}/users`, {
+            method: 'POST',
+            body: JSON.stringify({
+                name: name,
+                body: body,
+                userId: Math.random().toString(36).slice(2),
+            }),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            },
+        })
+            .then((res) => res.json())
+            .then((post) => {
+                setUsers((users) => [user, ...users]);
+                setName('');
+                setBody('');
+            })
+            .catch((err) => {
+                console.log(err.message);
+            });
+    };
 
     const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
@@ -35,7 +66,7 @@ export default function UserAuthForm({ className, ...props } : UserAuthFormProps
                 <div className="grid gap-2">
                     <div className="grid gap-1">
                         <Label className="sr-only" htmlFor="email">Email</Label>
-                        <Input id="email" placeholder="name@example.com" type="email" autoCapitalize="none" autoComplete="off" autoCorrect="off" disabled={isLoading} />
+                        <Input id="email" placeholder="name@example.com" type="name" autoCapitalize="none" autoComplete="off" autoCorrect="off" value={name} disabled={isLoading} onChange={(e) => setName(e.target.value)} />
                     </div>
                     <Button disabled={isLoading}>
                         {isLoading && (
@@ -43,6 +74,7 @@ export default function UserAuthForm({ className, ...props } : UserAuthFormProps
                         )}
                         Sign In
                     </Button>
+                    <div className="message">{message ? <p>{message}</p> : null}</div>
                 </div>
             </form>
             <div className="relative">
