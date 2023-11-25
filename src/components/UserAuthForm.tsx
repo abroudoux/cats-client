@@ -14,28 +14,35 @@ interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export default function UserAuthForm({ className, ...props } : UserAuthFormProps) {
 
-    const [name, setName] = useState('');
-    const [message, setMessage] = useState("");
+	const BASE_URL = "http://localhost:9090"
 
-    let handleSubmit = async (e: { preventDefault: () => void; }) => {
+    const [users, setUsers] = useState([]);
+    const [name, setName] = useState('');
+    const [body, setBody] = useState('');
+    const [message, setMessage] = useState('');
+
+    const handleSubmit = async (e: { preventDefault: () => void; }) => {
         e.preventDefault();
-        try {
-            let res = await fetch("http://localhost:9090/users/", {
-                method: "POST",
-                body: JSON.stringify({
-                    name: name,
-                }),
+        fetch(`${BASE_URL}/users`, {
+            method: 'POST',
+            body: JSON.stringify({
+                name: name,
+                body: body,
+                userId: Math.random().toString(36).slice(2),
+            }),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            },
+        })
+            .then((res) => res.json())
+            .then((post) => {
+                setUsers((users) => [user, ...users]);
+                setName('');
+                setBody('');
+            })
+            .catch((err) => {
+                console.log(err.message);
             });
-            let resJson = await res.json();
-            if (res.status === 200) {
-                setName("");
-                setMessage("User created successfully");
-            } else {
-                setMessage("Some error occured");
-            };
-        } catch (err) {
-            console.log(err);
-        }
     };
 
     const [isLoading, setIsLoading] = React.useState<boolean>(false);
