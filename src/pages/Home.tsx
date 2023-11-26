@@ -1,18 +1,16 @@
-import { ChangeEvent, FormEventHandler, useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { CardCat } from '@/components/CardCat';
 import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/components/ui/use-toast';
 import { ToastAction } from '@/components/ui/toast';
-import { Checkbox } from '@/components/ui/checkbox';
 
 
 interface Cat {
-	id : string,
+	_id : string,
 	name : string,
 	color : string
 };
@@ -39,7 +37,6 @@ export default function Home() {
 				headers: {
 			  		'Content-Type': 'application/json',
 				},
-				// body: JSON.stringify({ name, color }),
 				body: JSON.stringify({ name, color }),
 		  	});
 
@@ -59,7 +56,7 @@ export default function Home() {
 		};
 	};
 
-	const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+	const handleChange = (e : ChangeEvent<HTMLInputElement>) => {
 		switch (e.target.id) {
 			case 'name':
 				setName(e.target.value);
@@ -72,21 +69,23 @@ export default function Home() {
 		};
 	};
 
-	useEffect(() => {
-		const fetchCats = async () => {
-			setIsLoading(true);
+	const fetchCats = async () => {
+		setIsLoading(true);
 
-			try {
-				const response = await fetch(`${BASE_URL}/cats`);
-				const cats = (await response.json()) as Cat[];
-				setCats(cats);
-			} catch (e : any) {
-				setError(e);
-			} finally {
-				setIsLoading(false);
-			};
+		try {
+			const response = await fetch(`${BASE_URL}/cats`);
+			const cats = (await response.json()) as Cat[];
+			setCats(cats);
+
+			console.log(cats);
+		} catch (e : any) {
+			setError(e);
+		} finally {
+			setIsLoading(false);
 		};
+	};
 
+	useEffect(() => {
 		fetchCats();
 	}, []);
 
@@ -99,16 +98,14 @@ export default function Home() {
 	};
 
 	return (
-
 		<section className="page">
-
-			<h1 className="text-3xl mb-4">Welcome {userName}, meet your (cutes) friends :</h1>
+			<h1 className="text-3xl mb-4">Hello {userName}, meet your (cutes) friends :</h1>
 			{cats.length === 0 ? (
       			<p className="page text-xl font-normal">No cats found. Add a new cat?</p>
     		) : (
       			<ul>
         			{cats.map((cat) => {
-          				return <CardCat key={cat.id} id={cat.id} name={cat.name} color={cat.color} />;
+          				return <CardCat key={cat._id} _id={cat._id} name={cat.name} color={cat.color} onCatDelete={fetchCats} onCatUpdate={fetchCats} />;
         			})}
       			</ul>
     		)}
@@ -138,7 +135,6 @@ export default function Home() {
 						</DialogContent>
     			</Dialog>
 			</div>
-
 		</section>
   	);
 
