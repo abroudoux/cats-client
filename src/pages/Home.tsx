@@ -8,13 +8,13 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/components/ui/use-toast';
 import { ToastAction } from '@/components/ui/toast';
+import { Checkbox } from '@/components/ui/checkbox';
 
 
 interface Cat {
 	id : string,
 	name : string,
 	color : string
-	isAdopted : boolean,
 };
 
 
@@ -29,7 +29,6 @@ export default function Home() {
 
 	const [name, setName] = useState('');
 	const [color, setColor] = useState('');
-	// const [isAdopted, setIsAdopted] = useState('');
 
 	const { toast } = useToast();
 
@@ -40,8 +39,8 @@ export default function Home() {
 				headers: {
 			  		'Content-Type': 'application/json',
 				},
+				// body: JSON.stringify({ name, color }),
 				body: JSON.stringify({ name, color }),
-				// body: JSON.stringify({ name, color, isAdopted: isAdopted === 'true' }),
 		  	});
 
 		  	if (!response.ok) {
@@ -49,6 +48,7 @@ export default function Home() {
 		  	};
 
 		  	const newCat = (await response.json()) as Cat;
+			console.log(newCat);
 		  	setCats((prevCats) => [...prevCats, newCat]);
 
 			toast({title: "Cat successfully created !", action: (<ToastAction altText="Goto schedule to undo">Undo</ToastAction>),});
@@ -59,7 +59,7 @@ export default function Home() {
 		};
 	};
 
-	const handleChange = (e : React.ChangeEvent<HTMLInputElement>) => {
+	const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
 		switch (e.target.id) {
 			case 'name':
 				setName(e.target.value);
@@ -67,9 +67,6 @@ export default function Home() {
 			case 'color':
 				setColor(e.target.value);
 			break;
-			// case 'isAdopted':
-			// 	setIsAdopted(e.target.value);
-			// break;
 			default:
 			break;
 		};
@@ -106,11 +103,15 @@ export default function Home() {
 		<section className="page">
 
 			<h1 className="text-3xl mb-4">Welcome {userName}, meet your (cutes) friends :</h1>
-			<ul>
-				{cats.map((cat) => {
-					return <CardCat id={cat.id} name={cat.name} color={cat.color} />
-				})}
-			</ul>
+			{cats.length === 0 ? (
+      			<p className="page text-xl font-normal">No cats found. Add a new cat?</p>
+    		) : (
+      			<ul>
+        			{cats.map((cat) => {
+          				return <CardCat key={cat.id} id={cat.id} name={cat.name} color={cat.color} />;
+        			})}
+      			</ul>
+    		)}
 			<div className="flex-row-center-between gap-3">
 				<p className="text-lg">Add a new cat ?</p>
 				<Dialog {...Dialog}>
@@ -130,18 +131,6 @@ export default function Home() {
 									<Label htmlFor="color" className="text-right">Color</Label>
 									<Input id="color" placeholder="Which color is it?" className="col-span-3" value={color} onChange={handleChange} />
 								</div>
-								{/* <div className="grid grid-cols-4 items-center gap-4">
-									<Label htmlFor="status" className="text-right">Status</Label>
-									<Select>
-										<SelectTrigger id="isAdopted">
-											<SelectValue placeholder="Select" />
-										</SelectTrigger>
-										<SelectContent position="popper" value={isAdopted} onChange={(e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => handleChange(e)}>
-											<SelectItem value="true">Adopted</SelectItem>
-											<SelectItem value="false">Not Adopted</SelectItem>
-										</SelectContent>
-									</Select>
-								</div> */}
 							</div>
 							<DialogFooter>
 									<Button type="submit" onClick={handleCreateCat}>Create</Button>
