@@ -10,10 +10,10 @@ export default function Header() {
 
         <header className="w-full h-20 border-b-[1px] px-5 flex-row-center-between">
             <Link to="/">
-                <h1 className="font-semibold text-4xl">Catmmander</h1>
+                <h1 className="font-semibold text-4xl">Cats API</h1>
             </Link>
             <div className="flex flex-row items-center gap-4">
-                <Button><Link to="/users">Login</Link></Button>
+                <Button><Link to="/auth">Login</Link></Button>
                 <ModeToggle />
             </div>
         </header>

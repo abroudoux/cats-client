@@ -36,7 +36,7 @@ export default function UserAuthForm({ className, ...props } : UserAuthFormProps
         })
             .then((res) => res.json())
             .then((post) => {
-                setUsers((users) => [user, ...users]);
+                // setUsers((users) => [users, ...users]);
                 setName('');
                 setBody('');
             })

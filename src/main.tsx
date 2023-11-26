@@ -1,16 +1,15 @@
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
-import Home from './pages/Home';
-import Create from './pages/Create';
-import Login from './pages/Login';
+import Home from '@/pages/Home';
+import Auth from '@/pages/Auth';
 
 import { ThemeProvider } from '@/components/config/theme-provider';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Toaster } from '@/components/ui/toaster';
 
-import './style/index.css';
+import '@/style/index.css';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
@@ -19,7 +18,7 @@ const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 			<Header />
 			<Routes>
 					<Route path="/" element={<Home />}></Route>
-					<Route path="/users" element={<Login /> }></Route>
+					<Route path="/auth" element={<Auth /> }></Route>
 			</Routes>
 			<Footer />
 			<Toaster />

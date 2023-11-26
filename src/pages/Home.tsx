@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
@@ -7,6 +7,8 @@ import { CardCat } from '@/components/CardCat';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 import { ToastAction } from '@/components/ui/toast';
+import { Icons } from '@/components/ui/icons';
+import loading from '@/lib/loading';
 
 
 interface Cat {
@@ -23,7 +25,8 @@ export default function Home() {
 
 	const [error, setError] = useState();
 	const [cats, setCats] = useState<Cat[]>([]);
-	const [isLoading, setIsLoading] = useState(false);
+	const [isLoading, setIsLoading] = React.useState<boolean>(false);
+	const [isCreating, setIsCreating] = React.useState<boolean>(false);
 
 	const [name, setName] = useState('');
 	const [color, setColor] = useState('');
@@ -31,6 +34,10 @@ export default function Home() {
 	const { toast } = useToast();
 
 	const handleCreateCat = async () => {
+
+		setIsCreating(true);
+		await loading(2000);
+
 		try {
 			const response = await fetch(`${BASE_URL}/cats`, {
 				method: 'POST',
@@ -40,19 +47,20 @@ export default function Home() {
 				body: JSON.stringify({ name, color }),
 		  	});
 
-		  	if (!response.ok) {
+			if (response.ok) {
+				const newCat = (await response.json()) as Cat;
+				setCats((prevCats) => [...prevCats, newCat]);
+			  	toast({title: "Cat successfully created !", action: (<ToastAction altText="Goto schedule to undo">Undo</ToastAction>),});
+			} else {
+				toast({title: "Failed to create cat", action: (<ToastAction altText="Understand">OK</ToastAction>),});
 				throw new Error('Failed to create cat');
-		  	};
+			};
 
-		  	const newCat = (await response.json()) as Cat;
-			console.log(newCat);
-		  	setCats((prevCats) => [...prevCats, newCat]);
-
-			toast({title: "Cat successfully created !", action: (<ToastAction altText="Goto schedule to undo">Undo</ToastAction>),});
-
-		} catch (e) {
-		  	console.log(e);
+		} catch (error) {
+		  	console.log("Error during cat creation", error);
 			toast({title: "Error while cat creation", description: "Try again", action: (<ToastAction altText="Understand">OK</ToastAction>),});
+		} finally {
+			setIsCreating(false);
 		};
 	};
 
@@ -70,14 +78,13 @@ export default function Home() {
 	};
 
 	const fetchCats = async () => {
+
 		setIsLoading(true);
 
 		try {
 			const response = await fetch(`${BASE_URL}/cats`);
 			const cats = (await response.json()) as Cat[];
 			setCats(cats);
-
-			console.log(cats);
 		} catch (e : any) {
 			setError(e);
 		} finally {
@@ -130,7 +137,12 @@ export default function Home() {
 								</div>
 							</div>
 							<DialogFooter>
-									<Button type="submit" onClick={handleCreateCat}>Create</Button>
+									<Button type="submit" onClick={handleCreateCat} disabled={isCreating}>
+										{isCreating && (
+											<Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+										)}
+										Create
+									</Button>
 							</DialogFooter>
 						</DialogContent>
     			</Dialog>
