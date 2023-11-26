@@ -8,6 +8,8 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { useToast } from '@/components/ui/use-toast';
 import { ToastAction } from '@/components/ui/toast';
 import { Loader2 } from 'lucide-react';
+import loading from '@/lib/loading';
+import { Icons } from './ui/icons';
 
 
 type CardCatProps = {
@@ -39,9 +41,11 @@ export const CardCat : FC<CardCatProps> = ( props ) => {
     const { toast } = useToast();
 
     const handleDelete = async () => {
-        try {
-            setIsDeleting(true);
 
+        setIsDeleting(true);
+        await loading(2000);
+
+        try {
             const response = await fetch(`${BASE_URL}/cats/${props._id}`, {
                 method: 'DELETE',
                 headers: {
@@ -51,30 +55,33 @@ export const CardCat : FC<CardCatProps> = ( props ) => {
 
             if (response.ok) {
                 props.onCatDelete();
-                toast({title: "Cat successfully deleted !", action: (<ToastAction altText="Goto schedule to undo">OK</ToastAction>),});
+                toast({title: "Cat successfully deleted !", action: (<ToastAction altText="Goto schedule to undo">OK</ToastAction>)});
             } else {
-                toast({title: "Failed to delete cat", action: (<ToastAction altText="Understand">OK</ToastAction>),});
+                toast({title: "Failed to delete cat", action: (<ToastAction altText="Understand">OK</ToastAction>)});
+                throw new Error('Failed to delete cat');
             };
 
         } catch (error) {
             console.log("Error during cat deletion", error)
             toast({title: "Error during cat deletion", action: (<ToastAction altText="Goto schedule to undo">Undo</ToastAction>),});
         } finally {
-            await new Promise(resolve => setTimeout(resolve, 2000));
             setIsDeleting(false);
         };
     };
 
     const handleSheetOpen = async () => {
+
+        await loading(2000);
+
         try {
             const response = await fetch(`${BASE_URL}/cats/${props._id}`);
+
             if (response.ok) {
                 const catData = await response.json();
                 setCatData(catData);
                 setUpdatedCatData(catData);
-                console.error('Success to fetch cat data');
             } else {
-                console.error('Failed to fetch cat data');
+                toast({title: "Failed to update cat", action: (<ToastAction altText="Understand">OK</ToastAction>)});
             };
 
         } catch (error) {
@@ -83,9 +90,11 @@ export const CardCat : FC<CardCatProps> = ( props ) => {
     };
 
     const handleUpdate = async () => {
-        try {
-            setIsUpdating(true);
 
+        setIsUpdating(true);
+        await loading(2000);
+
+        try {
             const response = await fetch(`${BASE_URL}/cats/${props._id}`, {
                 method: 'PUT',
                 headers: {
@@ -99,6 +108,7 @@ export const CardCat : FC<CardCatProps> = ( props ) => {
                 toast({title: "Cat updated successfully", action: (<ToastAction altText="Goto schedule to undo">Undo</ToastAction>)});
             } else {
                 toast({title: "Error during cat updated", action: (<ToastAction altText="Undersatnd">OK</ToastAction>)});
+                throw new Error('Failed to update cat');
             };
 
         } catch (error) {
@@ -145,7 +155,9 @@ export const CardCat : FC<CardCatProps> = ( props ) => {
                             <SheetFooter>
                                 <SheetClose asChild>
                                     <Button type="submit" onClick={handleUpdate} disabled={isUpdating}>
-                                        {isUpdating && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                                        {isUpdating && (
+											<Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+										)}
                                         {isUpdating ? 'Updating..' : 'Update'}
                                     </Button>
                                 </SheetClose>
@@ -168,7 +180,9 @@ export const CardCat : FC<CardCatProps> = ( props ) => {
                             <AlertDialogFooter>
                                 <AlertDialogCancel onClick={() => setIsDeleting(false)}>Cancel</AlertDialogCancel>
                                 <AlertDialogAction onClick={handleDelete} disabled={isDeleting}>
-                                    {isDeleting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                                    {isDeleting && (
+											<Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+										)}
                                     {isDeleting ? 'Deleting...' : 'Delete'}
                                 </AlertDialogAction>
                             </AlertDialogFooter>
