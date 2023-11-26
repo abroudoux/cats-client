@@ -10,9 +10,13 @@ export class CatsService {
 
     constructor(@InjectModel('Cat') private readonly catModel : Model<Cat>) {}
 
-    async getCats(isAdopted ? : boolean) : Promise<Cat[]> {
-        const filter = isAdopted !== undefined ? { isAdopted } : {};
-        return await this.catModel.find(filter);
+    // async getCats(isAdopted ? : boolean) : Promise<Cat[]> {
+    //     const filter = isAdopted !== undefined ? { isAdopted } : {};
+    //     return await this.catModel.find(filter);
+    // };
+
+    async getCats() : Promise<Cat[]> {
+        return await this.catModel.find();
     };
 
     async getCat(id : string) : Promise<Cat> {
@@ -38,10 +42,34 @@ export class CatsService {
     };
 
     async deleteCat(id : string) : Promise<Cat> {
-        return await this.catModel.findByIdAndDelete(id);
+        const isValidId = mongoose.isValidObjectId(id);
+
+        if (!isValidId) {
+            throw new BadRequestException('Enter a valid id');
+        };
+
+        const catDeleted = await this.catModel.findByIdAndDelete({ _id: id });
+
+        if (!catDeleted) {
+            throw new NotFoundException('Cat not found');
+        };
+
+        return catDeleted;
     };
 
     async updateCat(id : string, cat : Cat) : Promise<Cat> {
-        return await this.catModel.findByIdAndUpdate(id, cat, { new: true });
+        const isValidId = mongoose.isValidObjectId(id);
+
+        if (!isValidId) {
+            throw new BadRequestException('Enter a vlid id');
+        };
+
+        const catUpdated = await this.catModel.findByIdAndUpdate({ _id: id });
+
+        if (!catUpdated) {
+            throw new NotFoundException('Cat not found');
+        };
+
+        return catUpdated;
     };
 };

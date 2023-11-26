@@ -13,8 +13,8 @@ export class CatsController {
 
     // GET /cats?isAdopted= -> []
     @Get()
-    async getCats(@Query('isAdopted') isAdopted ? : boolean) : Promise<Cat[]> {
-        return await this.catsService.getCats(isAdopted);
+    async getCats() : Promise<Cat[]> {
+        return await this.catsService.getCats();
     };
 
     // GET /cats/:id -> { ... }

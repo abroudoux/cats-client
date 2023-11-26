@@ -15,10 +15,6 @@ export class UpdateCatDto extends PartialType(CreateCatDto) {
     @IsString()
     readonly color : string;
 
-    @IsOptional()
-    @IsBoolean()
-    readonly isAdopted : boolean;
-
     // @IsOptional()
     // @IsEnum(Owner, { message : 'Please select the owner\'s cat' })
     // readonly owner : Owner;
