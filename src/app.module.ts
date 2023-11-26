@@ -7,11 +7,13 @@ import { AppController } from '@/app.controller';
 import { AppService } from '@/app.service';
 import { CatsModule } from '@/cats/cats.module';
 import { UsersModule } from '@/users/users.module';
+import { AuthController } from './auth/controllers/auth.controller';
+import { AuthModule } from './auth/auth.module';
 
 
 @Module({
-    imports: [CatsModule, MongooseModule.forRoot(config.mongoURI), UsersModule],
-    controllers: [AppController],
+    imports: [CatsModule, MongooseModule.forRoot(config.mongoURI), UsersModule, AuthModule],
+    controllers: [AppController, AuthController],
     providers: [AppService],
 })
 export class AppModule {}
