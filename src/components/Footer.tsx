@@ -9,7 +9,7 @@ import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 export default function Footer() {
 
     return (
-        <footer className="w-full h-20 border-t-[1px] px-5 flex-row-center-between">
+        <footer className="w-full h-20 asbolute fixed bottom-0 border-t-[1px] px-5 flex-row-center-between">
             <p>© 2023-present
                 <HoverCard>
                     <HoverCardTrigger asChild>

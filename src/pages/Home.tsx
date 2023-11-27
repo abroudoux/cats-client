@@ -23,6 +23,8 @@ export default function Home() {
 	const userName = 'Arthur';
 	const BASE_URL = "http://localhost:9090"
 
+	const { toast } = useToast();
+
 	const [error, setError] = useState();
 	const [cats, setCats] = useState<Cat[]>([]);
 	const [isLoading, setIsLoading] = React.useState<boolean>(false);
@@ -30,8 +32,6 @@ export default function Home() {
 
 	const [name, setName] = useState('');
 	const [color, setColor] = useState('');
-
-	const { toast } = useToast();
 
 	const handleCreateCat = async () => {
 
@@ -106,7 +106,7 @@ export default function Home() {
 
 	return (
 		<section className="page">
-			<h1 className="text-3xl mb-4">Hello {userName}, meet your (cutes) friends :</h1>
+			<h1 className="text-3xl mb-4 text-center">Hello {userName}, meet your (cutes) friends :</h1>
 			{cats.length === 0 ? (
       			<p className="page text-xl font-normal">No cats found. Add a new cat?</p>
     		) : (

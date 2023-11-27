@@ -4,7 +4,7 @@
 
 
 .page {
-  @apply w-full h-auto flex-col-center py-16;
+  @apply w-full h-auto flex-col-center py-32;
 }
 
 .flex-col-center {
