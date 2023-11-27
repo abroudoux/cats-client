@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { CardCat } from '@/components/CardCat';
@@ -29,11 +29,14 @@ export default function Home() {
 	const [cats, setCats] = useState<Cat[]>([]);
 	const [isLoading, setIsLoading] = React.useState<boolean>(false);
 	const [isCreating, setIsCreating] = React.useState<boolean>(false);
+	const [isOpen, setIsOpen] = React.useState<boolean>(false);
 
 	const [name, setName] = useState('');
 	const [color, setColor] = useState('');
 
 	const handleCreateCat = async () => {
+
+		setIsOpen(true);
 
 		setIsCreating(true);
 		await loading(2000);
@@ -61,6 +64,7 @@ export default function Home() {
 			toast({title: "Error while cat creation", description: "Try again", action: (<ToastAction altText="Understand">OK</ToastAction>),});
 		} finally {
 			setIsCreating(false);
+			setIsOpen(false);
 		};
 	};
 
@@ -122,29 +126,31 @@ export default function Home() {
 						<DialogTrigger asChild>
 							<Button variant="outline">Create</Button>
 						</DialogTrigger>
-						<DialogContent className="sm:max-w-[425px]">
-							<DialogHeader>
-								<DialogTitle>Create a new cat</DialogTitle>
-							</DialogHeader>
-							<div className="grid gap-4 py-4">
-								<div className="grid grid-cols-4 items-center gap-4">
-									<Label htmlFor="name" className="text-right">Name</Label>
-									<Input id="name" placeholder="What's his name?" className="col-span-3" value={name} onChange={handleChange} />
+							<DialogContent className="sm:max-w-[425px]">
+								<DialogHeader>
+									<DialogTitle>Create a new cat</DialogTitle>
+								</DialogHeader>
+								<div className="grid gap-4 py-4">
+									<div className="grid grid-cols-4 items-center gap-4">
+										<Label htmlFor="name" className="text-right">Name</Label>
+										<Input id="name" placeholder="What's his name?" className="col-span-3" value={name} onChange={handleChange} />
+									</div>
+									<div className="grid grid-cols-4 items-center gap-4">
+										<Label htmlFor="color" className="text-right">Color</Label>
+										<Input id="color" placeholder="Which color is it?" className="col-span-3" value={color} onChange={handleChange} />
+									</div>
 								</div>
-								<div className="grid grid-cols-4 items-center gap-4">
-									<Label htmlFor="color" className="text-right">Color</Label>
-									<Input id="color" placeholder="Which color is it?" className="col-span-3" value={color} onChange={handleChange} />
-								</div>
-							</div>
-							<DialogFooter>
-									<Button type="submit" onClick={handleCreateCat} disabled={isCreating}>
-										{isCreating && (
-											<Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-										)}
-										Create
-									</Button>
-							</DialogFooter>
-						</DialogContent>
+								<DialogFooter>
+									<DialogClose asChild>
+										<Button type="submit" onClick={handleCreateCat} disabled={isCreating}>
+											{isCreating && (
+												<Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+											)}
+											Create
+										</Button>
+									</DialogClose>
+								</DialogFooter>
+							</DialogContent>
     			</Dialog>
 			</div>
 		</section>

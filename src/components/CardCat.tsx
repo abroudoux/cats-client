@@ -1,5 +1,6 @@
 import React, { FC, useState } from 'react';
 
+import loading from '@/lib/loading';
 import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
@@ -7,9 +8,7 @@ import { Input } from '@/components/ui/input';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { useToast } from '@/components/ui/use-toast';
 import { ToastAction } from '@/components/ui/toast';
-import { Loader2 } from 'lucide-react';
-import loading from '@/lib/loading';
-import { Icons } from './ui/icons';
+import { Icons } from '@/components/ui/icons';
 
 
 type CardCatProps = {
@@ -18,11 +17,6 @@ type CardCatProps = {
     color : string;
     onCatDelete : () => void;
     onCatUpdate : () => void;
-};
-
-interface CatUpdated {
-	name ? : string,
-	color ? : string
 };
 
 
