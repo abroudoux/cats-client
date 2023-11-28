@@ -4,12 +4,12 @@ import { DashboardIcon, GitHubLogoIcon, EnterIcon, ExitIcon } from '@radix-ui/re
 import { ModeToggle } from '@/components/config/mode-toggle';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { useTokenStore } from "@/lib/store";
+import { useStore } from "@/lib/store";
 
 
 export default function Header() {
 
-    const { token, signIn, signOut } = useTokenStore();
+    const { token, signIn, signOut } = useStore();
 
     return (
         <header className="w-full h-20 border-b-[1px] px-5 fixed top-0 flex-row-center-between">

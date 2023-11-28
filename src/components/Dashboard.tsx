@@ -9,7 +9,7 @@ import { useToast } from '@/components/ui/use-toast';
 import { ToastAction } from '@/components/ui/toast';
 import { Icons } from '@/components/ui/icons';
 import loading from '@/lib/loading';
-import { useTokenStore } from "@/lib/store";
+import { useStore } from "@/lib/store";
 
 
 interface Cat {
@@ -21,7 +21,7 @@ interface Cat {
 
 export default function Dashboard() {
 
-    const { isDeleting, isUpdating, isCreating, setIsCreating } = useTokenStore();
+    const { isDeleting, isUpdating, isCreating, setIsCreating } = useStore();
 
 	const userName = 'Arthur';
 	const BASE_URL = "http://localhost:9090"

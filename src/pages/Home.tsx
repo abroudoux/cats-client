@@ -1,11 +1,11 @@
 import { Button } from '@/components/ui/button';
 import Dashboard from '@/components/Dashboard';
-import { useTokenStore } from "@/lib/store";
+import { useStore } from "@/lib/store";
 
 
 export default function Home() {
 
-	const { token, signIn } = useTokenStore();
+	const { token, signIn } = useStore();
 
 	if (!token) {
 		return (

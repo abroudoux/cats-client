@@ -1,6 +1,8 @@
-import React, { FC, useState } from 'react';
+import { FC, useState } from 'react';
 
 import loading from '@/lib/loading';
+import { useStore } from "@/lib/store";
+
 import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
@@ -10,7 +12,6 @@ import { useToast } from '@/components/ui/use-toast';
 import { ToastAction } from '@/components/ui/toast';
 import { Icons } from '@/components/ui/icons';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { useTokenStore } from "@/lib/store";
 
 
 type CardCatProps = {
@@ -24,7 +25,7 @@ type CardCatProps = {
 
 export const CardCat : FC<CardCatProps> = ( props ) => {
 
-    const { isDeleting, isUpdating, isLoading, isCreating, setIsDeleting, setIsUpdating, setIsLoading } = useTokenStore();
+    const { isDeleting, isUpdating, isLoading, isCreating, setIsDeleting, setIsUpdating, setIsLoading } = useStore();
 
     const BASE_URL = "http://localhost:9090";
 

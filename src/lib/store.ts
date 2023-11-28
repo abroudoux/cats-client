@@ -1,6 +1,8 @@
 import { create } from 'zustand';
 
 
+const savedToken = localStorage.getItem('token');
+
 interface Store {
     token: boolean;
     isDeleting: boolean;
@@ -15,15 +17,20 @@ interface Store {
     setIsCreating: (value: boolean) => void;
 };
 
-
-export const useTokenStore = create<Store>((set) => ({
-    token: false,
+export const useStore = create<Store>((set) => ({
+    token: savedToken ? JSON.parse(savedToken) : false,    
     isDeleting: false,
     isUpdating: false,
     isLoading: false,
     isCreating: false,
-    signIn: () => set((state) => ({ token: true })),
-    signOut: () => set((state) => ({ token: false })),
+    signIn: () => {
+        set({ token: true });
+        localStorage.setItem('token', JSON.stringify(true));
+    },
+    signOut: () => {
+        set({ token: false });
+        localStorage.removeItem('token');
+    },
     setIsDeleting: (value: boolean) => set({ isDeleting: value }),
     setIsUpdating: (value: boolean) => set({ isUpdating: value }),
     setIsLoading: (value: boolean) => set({ isLoading: value }),
