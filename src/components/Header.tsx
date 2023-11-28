@@ -8,7 +8,7 @@ export default function Header() {
 
     return (
 
-        <header className="w-full h-20 border-b-[1px] px-5 absolute top-0 flex-row-center-between">
+        <header className="w-full h-20 border-b-[1px] px-5 fixed top-0 flex-row-center-between">
             <Link to="/">
                 <h1 className="font-semibold text-4xl">Cats API</h1>
             </Link>

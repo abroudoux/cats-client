@@ -9,6 +9,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { useToast } from '@/components/ui/use-toast';
 import { ToastAction } from '@/components/ui/toast';
 import { Icons } from '@/components/ui/icons';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 
 type CardCatProps = {
@@ -26,7 +27,6 @@ export const CardCat : FC<CardCatProps> = ( props ) => {
 
     const { toast } = useToast();
 
-    const [error, setError] = useState();
     const [isDeleting, setIsDeleting] = useState(false);
     const [isUpdating, setIsUpdating] = useState(false);
     const [isLoading, setIsLoading] = React.useState<boolean>(false);
@@ -56,7 +56,7 @@ export const CardCat : FC<CardCatProps> = ( props ) => {
 
             if (response.ok) {
                 props.onCatDelete();
-                toast({title: "Cat successfully deleted !", action: (<ToastAction altText="Goto schedule to undo">OK</ToastAction>)});
+                toast({title: "Cat successfully deleted !", action: (<ToastAction altText="Understand">OK</ToastAction>)});
             } else {
                 toast({title: "Failed to delete cat", action: (<ToastAction altText="Understand">OK</ToastAction>)});
                 throw new Error('Failed to delete cat');
@@ -64,7 +64,7 @@ export const CardCat : FC<CardCatProps> = ( props ) => {
 
         } catch (error) {
             console.log("Error during cat deletion", error)
-            toast({title: "Error during cat deletion", action: (<ToastAction altText="Goto schedule to undo">Undo</ToastAction>),});
+            toast({title: "Error during cat deletion", action: (<ToastAction altText="Understand">OK</ToastAction>),});
         } finally {
             setIsDeleting(false);
         };
@@ -114,7 +114,7 @@ export const CardCat : FC<CardCatProps> = ( props ) => {
             if (response.ok) {
                 setCatData({ ...catData, ...catDataUpdated });
                 props.onCatUpdate();
-                toast({ title: "Cat updated successfully", action: (<ToastAction altText="Goto schedule to undo">Undo</ToastAction>) });
+                toast({ title: "Cat updated successfully", action: (<ToastAction altText="Understand">Undo</ToastAction>) });
             } else {
                 toast({ title: "Error during cat update", action: (<ToastAction altText="Understand">OK</ToastAction>) });
                 throw new Error('Failed to update cat');
@@ -141,13 +141,20 @@ export const CardCat : FC<CardCatProps> = ( props ) => {
                 <li className="cursor-pointer">
                     <Sheet>
                         <SheetTrigger asChild>
-                            <Button variant="outline" size="icon" onClick={handleSheetOpen} disabled={isUpdating || isDeleting}>
-                                {isUpdating ?
-                                    <Icons.spinner className="h-4 w-4 animate-spin" /> 
-                                    :
-                                    '🔎'
-                                }
-                            </Button>
+                            <TooltipProvider>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                    <Button variant="outline" size="icon" onClick={handleSheetOpen} disabled={isUpdating || isDeleting}>
+                                        {isUpdating ?
+                                        <Icons.spinner className="h-4 w-4 animate-spin" />  : '🔎'
+                                        }
+                                    </Button>
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                        <span>Modify</span>
+                                    </TooltipContent>
+                                </Tooltip>
+                            </TooltipProvider>
                         </SheetTrigger>
                         <SheetContent>
                             <SheetHeader>
@@ -185,7 +192,6 @@ export const CardCat : FC<CardCatProps> = ( props ) => {
 											<Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
 										)}
                                         {isUpdating ? 'Updating..' : 'Update'}
-
                                     </Button>
                                 </SheetClose>
                             </SheetFooter>
@@ -195,13 +201,19 @@ export const CardCat : FC<CardCatProps> = ( props ) => {
                 <li className="cursor-pointer">
                     <AlertDialog>
                         <AlertDialogTrigger asChild>
-                            <Button variant="outline" className="flex-col-center-center" size="icon" disabled={isDeleting || isUpdating}>
-                                {isDeleting ?
-                                    <Icons.spinner className="h-4 w-4 animate-spin" /> 
-                                    :
-                                    '❌'
-                                }
-                            </Button>
+                            <TooltipProvider>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <Button variant="outline" className="flex-col-center-center" size="icon" disabled={isDeleting || isUpdating}>
+                                            {isDeleting ?
+                                                <Icons.spinner className="h-4 w-4 animate-spin" /> : '❌'}
+                                        </Button>
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                        <span>Delete</span>
+                                    </TooltipContent>
+                                </Tooltip>
+                            </TooltipProvider>
                         </AlertDialogTrigger>
                         <AlertDialogContent>
                             <AlertDialogHeader>

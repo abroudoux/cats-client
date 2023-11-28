@@ -29,14 +29,11 @@ export default function Home() {
 	const [cats, setCats] = useState<Cat[]>([]);
 	const [isLoading, setIsLoading] = React.useState<boolean>(false);
 	const [isCreating, setIsCreating] = React.useState<boolean>(false);
-	const [isOpen, setIsOpen] = React.useState<boolean>(false);
 
 	const [name, setName] = useState('');
 	const [color, setColor] = useState('');
 
 	const handleCreateCat = async () => {
-
-		setIsOpen(true);
 
 		setIsCreating(true);
 		await loading(2000);
@@ -53,7 +50,7 @@ export default function Home() {
 			if (response.ok) {
 				const newCat = (await response.json()) as Cat;
 				setCats((prevCats) => [...prevCats, newCat]);
-			  	toast({title: "Cat successfully created !", action: (<ToastAction altText="Goto schedule to undo">Undo</ToastAction>),});
+			  	toast({title: "Cat successfully created !", action: (<ToastAction altText="Goto schedule to undo">OK</ToastAction>),});
 			} else {
 				toast({title: "Failed to create cat", action: (<ToastAction altText="Understand">OK</ToastAction>),});
 				throw new Error('Failed to create cat');
@@ -64,7 +61,6 @@ export default function Home() {
 			toast({title: "Error while cat creation", description: "Try again", action: (<ToastAction altText="Understand">OK</ToastAction>),});
 		} finally {
 			setIsCreating(false);
-			setIsOpen(false);
 		};
 	};
 
@@ -124,33 +120,37 @@ export default function Home() {
 				<p className="text-lg">Add a new cat ?</p>
 				<Dialog {...Dialog}>
 						<DialogTrigger asChild>
-							<Button variant="outline">Create</Button>
+							<Button variant="outline" className="flex-col-center-center">
+								{isCreating ? 
+									<Icons.spinner className="h-4 w-4 animate-spin" /> : 'Create'
+								}
+							</Button>
 						</DialogTrigger>
-							<DialogContent className="sm:max-w-[425px]">
-								<DialogHeader>
-									<DialogTitle>Create a new cat</DialogTitle>
-								</DialogHeader>
-								<div className="grid gap-4 py-4">
-									<div className="grid grid-cols-4 items-center gap-4">
-										<Label htmlFor="name" className="text-right">Name</Label>
-										<Input id="name" placeholder="What's his name?" className="col-span-3" value={name} onChange={handleChange} />
-									</div>
-									<div className="grid grid-cols-4 items-center gap-4">
-										<Label htmlFor="color" className="text-right">Color</Label>
-										<Input id="color" placeholder="Which color is it?" className="col-span-3" value={color} onChange={handleChange} />
-									</div>
+						<DialogContent className="sm:max-w-[425px]">
+							<DialogHeader>
+								<DialogTitle>Create a new cat</DialogTitle>
+							</DialogHeader>
+							<div className="grid gap-4 py-4">
+								<div className="grid grid-cols-4 items-center gap-4">
+									<Label htmlFor="name" className="text-right">Name</Label>
+									<Input id="name" placeholder="What's his name?" className="col-span-3" value={name} onChange={handleChange} />
 								</div>
-								<DialogFooter>
-									<DialogClose asChild>
-										<Button type="submit" onClick={handleCreateCat} disabled={isCreating}>
-											{isCreating && (
-												<Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-											)}
-											Create
-										</Button>
-									</DialogClose>
-								</DialogFooter>
-							</DialogContent>
+								<div className="grid grid-cols-4 items-center gap-4">
+									<Label htmlFor="color" className="text-right">Color</Label>
+									<Input id="color" placeholder="Which color is it?" className="col-span-3" value={color} onChange={handleChange} />
+								</div>
+							</div>
+							<DialogFooter>
+								<DialogClose asChild>
+									<Button type="submit" onClick={handleCreateCat} disabled={isCreating}>
+										{isCreating && (
+											<Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+										)}
+										Create
+									</Button>
+								</DialogClose>
+							</DialogFooter>
+						</DialogContent>
     			</Dialog>
 			</div>
 		</section>
