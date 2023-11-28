@@ -1,9 +1,26 @@
 import { create } from 'zustand';
 
 
-const useStore = create((set) => ({
-    token: Boolean,
+interface Token {
+    token: boolean;
+    signIn: () => void;
+    signOut: () => void;
+};
 
-    signIn: () => set({ token: true }),
-    singOut: () => set({ token: true })
+interface Delete {
+    delete: boolean;
+    signIn: () => void;
+    signOut: () => void;
+};
+
+interface Update {
+    token: boolean;
+    signIn: () => void;
+    signOut: () => void;
+};
+
+export const useTokenStore = create<Token>((set) => ({
+    token: false,
+    signIn: () => set((state) => ({ token: true })),
+    signOut: () => set((state) => ({ token: false })),
 }));

@@ -1,25 +1,15 @@
-import React from "react";
 import { Link } from 'react-router-dom';
-import { DashboardIcon, GitHubLogoIcon, EnterIcon, ExitIcon } from '@radix-ui/react-icons'
+import { DashboardIcon, GitHubLogoIcon, EnterIcon, ExitIcon } from '@radix-ui/react-icons';
 
 import { ModeToggle } from '@/components/config/mode-toggle';
 import { Button } from '@/components/ui/button';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { useTokenStore } from "@/lib/store";
 
 
 export default function Header() {
 
-    const token = useStore((token) => state.bears)
-
-    const [isToken, setIsToken] = React.useState<boolean>(true);
-
-    const signOut = () => {
-        setIsToken(false);
-    };
-
-    const signIn = () => {
-        setIsToken(true);
-    };
+    const { token, signIn, signOut } = useTokenStore();
 
     return (
         <header className="w-full h-20 border-b-[1px] px-5 fixed top-0 flex-row-center-between">
@@ -30,19 +20,19 @@ export default function Header() {
                 <DropdownMenu>
                     <DropdownMenuTrigger>
                         <Button>
-                            {isToken ?
+                            {token ?
                                 'Arthur' : 'Connect'
                             }
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
                         <DropdownMenuLabel>
-                            {isToken ?
+                            {token ?
                                 'Your Account' : 'Menu'
                             }
                         </DropdownMenuLabel>
                         <DropdownMenuSeparator />
-                        {isToken ?
+                        {token ?
                             <>
                                 <DropdownMenuItem>
                                     <p className="flex-row-center-between gap-1" onClick={signOut}><EnterIcon/>Sign Out</p>
