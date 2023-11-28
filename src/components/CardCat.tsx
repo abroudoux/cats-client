@@ -10,6 +10,7 @@ import { useToast } from '@/components/ui/use-toast';
 import { ToastAction } from '@/components/ui/toast';
 import { Icons } from '@/components/ui/icons';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { useTokenStore } from "@/lib/store";
 
 
 type CardCatProps = {
@@ -23,13 +24,11 @@ type CardCatProps = {
 
 export const CardCat : FC<CardCatProps> = ( props ) => {
 
+    const { isDeleting, isUpdating, isLoading, isCreating, setIsDeleting, setIsUpdating, setIsLoading } = useTokenStore();
+
     const BASE_URL = "http://localhost:9090";
 
     const { toast } = useToast();
-
-    const [isDeleting, setIsDeleting] = useState(false);
-    const [isUpdating, setIsUpdating] = useState(false);
-    const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
     const [catData, setCatData] = useState({
         name : '',
@@ -155,7 +154,7 @@ export const CardCat : FC<CardCatProps> = ( props ) => {
                                     </TooltipContent>
                                 </Tooltip>
                             </TooltipProvider> */}
-                            <Button variant="outline" size="icon" onClick={handleSheetOpen} disabled={isUpdating || isDeleting}>
+                            <Button variant="outline" size="icon" onClick={handleSheetOpen} disabled={isUpdating || isDeleting || isLoading || isCreating}>
                                 {isUpdating ?
                                 <Icons.spinner className="h-4 w-4 animate-spin" />  : '🔎'
                                 }
@@ -192,7 +191,7 @@ export const CardCat : FC<CardCatProps> = ( props ) => {
                             </div>
                             <SheetFooter>
                                 <SheetClose asChild>
-                                    <Button type="submit" onClick={handleUpdate}>
+                                    <Button type="submit" onClick={handleUpdate} disabled={isLoading}>
                                         {isUpdating && (
 											<Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
 										)}
@@ -219,7 +218,7 @@ export const CardCat : FC<CardCatProps> = ( props ) => {
                                     </TooltipContent>
                                 </Tooltip>
                             </TooltipProvider> */}
-                            <Button variant="outline" className="flex-col-center-center" size="icon" disabled={isDeleting || isUpdating}>
+                            <Button variant="outline" className="flex-col-center-center" size="icon" disabled={isDeleting || isUpdating || isLoading || isCreating}>
                                 {isDeleting ?
                                     <Icons.spinner className="h-4 w-4 animate-spin" /> : '❌'}
                             </Button>

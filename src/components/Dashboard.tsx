@@ -9,6 +9,7 @@ import { useToast } from '@/components/ui/use-toast';
 import { ToastAction } from '@/components/ui/toast';
 import { Icons } from '@/components/ui/icons';
 import loading from '@/lib/loading';
+import { useTokenStore } from "@/lib/store";
 
 
 interface Cat {
@@ -20,6 +21,8 @@ interface Cat {
 
 export default function Dashboard() {
 
+    const { isDeleting, isUpdating, isCreating, setIsCreating } = useTokenStore();
+
 	const userName = 'Arthur';
 	const BASE_URL = "http://localhost:9090"
 
@@ -28,7 +31,6 @@ export default function Dashboard() {
 	const [error, setError] = useState();
 	const [cats, setCats] = useState<Cat[]>([]);
 	const [isLoading, setIsLoading] = React.useState<boolean>(false);
-	const [isCreating, setIsCreating] = React.useState<boolean>(false);
 
 	const [name, setName] = useState('');
 	const [color, setColor] = useState('');
@@ -120,7 +122,7 @@ export default function Dashboard() {
 				<p className="text-lg">Add a new cat ?</p>
 				<Dialog {...Dialog}>
 						<DialogTrigger asChild>
-							<Button variant="outline" className="flex-col-center-center">
+							<Button variant="outline" className="flex-col-center-center" disabled={isDeleting || isUpdating}>
 								{isCreating ? 
 									<Icons.spinner className="h-4 w-4 animate-spin" /> : 'Create'
 								}
