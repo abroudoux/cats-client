@@ -1,5 +1,8 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 
+import loading from '@/lib/loading';
+import useStore from "@/lib/store";
+
 import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -8,8 +11,6 @@ import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 import { ToastAction } from '@/components/ui/toast';
 import { Icons } from '@/components/ui/icons';
-import loading from '@/lib/loading';
-import { useStore } from "@/lib/store";
 
 
 interface Cat {
@@ -70,10 +71,10 @@ export default function Dashboard() {
 		switch (e.target.id) {
 			case 'name':
 				setName(e.target.value);
-			break;
+				break;
 			case 'color':
 				setColor(e.target.value);
-			break;
+				break;
 			default:
 			break;
 		};

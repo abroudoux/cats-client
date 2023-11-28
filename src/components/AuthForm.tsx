@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
+import loading from '@/lib/loading';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
@@ -13,20 +15,56 @@ import { ToastAction } from '@/components/ui/toast';
 
 export default function AuthForm() {
 
+    const BASE_URL = "http://localhost:9090";
+
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
     const navigate = useNavigate();
 
     const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
     const { toast } = useToast();
 
-    async function signin(event: React.SyntheticEvent) {
-        event.preventDefault();
-        setIsLoading(true);
+    const handleChange = (e : ChangeEvent<HTMLInputElement>) => {
+		switch (e.target.id) {
+			case 'name':
+				setName(e.target.value);
+			    break;
+			case 'email':
+				setEmail(e.target.value);
+			    break;
+            case 'password':
+                setPassword(e.target.value);
+                break;
+			default:
+			    break;
+		};
+	};
 
-        setTimeout(() => {
-            setIsLoading(false)
-            toast({title: "Account successfully created !", description: "You're now a Catmmander's user", action: (<ToastAction altText="Goto schedule to undo">Undo</ToastAction>),});
-        }, 2000)
+    const signIn = async () => {
+
+        setIsLoading(true);
+        await loading(2000);
+
+        try {
+            const response = await fetch(`${BASE_URL}/cats`, {
+				method: 'POST',
+				headers: {
+			  		'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({ name, email, password }),
+		  	});
+
+            console.log(response);
+
+        } catch (error) {
+            console.log("Error during registration", error);
+			toast({title: "Error while registration", description: "Try again", action: (<ToastAction altText="Understand">OK</ToastAction>),});
+        } finally {
+            setIsLoading(false);
+        };
     };
 
     async function login(event: React.SyntheticEvent) {
@@ -45,7 +83,6 @@ export default function AuthForm() {
                     <TabsTrigger value="signin">Sign In</TabsTrigger>
                     <TabsTrigger value="login">Log In</TabsTrigger>
                 </TabsList>
-                <form onSubmit={signin}>
                     <TabsContent value="signin">
                         <Card>
                             <CardHeader>
@@ -57,19 +94,19 @@ export default function AuthForm() {
                             <CardContent className="space-y-2">
                                 <div className="space-y-1">
                                     <Label htmlFor="name">Name</Label>
-                                    <Input id="name" type="text" placeholder="Your name" />
+                                    <Input autoComplete="off" id="name" type="text" value={name} placeholder="Your name" onChange={handleChange} />
                                 </div>
                                 <div className="space-y-1">
                                     <Label htmlFor="email">Email</Label>
-                                    <Input id="email" type="email" placeholder="Your email" />
+                                    <Input autoComplete="off" id="email" type="email" value={email} placeholder="Your email" onChange={handleChange} />
                                 </div>
                                 <div className="space-y-1">
                                     <Label htmlFor="password">Password</Label>
-                                    <Input id="password" type="password" placeholder="Enter a password" />
+                                    <Input id="password" type="password" value={password} placeholder="Enter a password" onChange={handleChange} />
                                 </div>
                             </CardContent>
                             <CardFooter>
-                                <Button disabled={isLoading}>
+                                <Button disabled={isLoading} onClick={signIn}>
                                     {isLoading && (
                                         <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                                     )}
@@ -78,7 +115,6 @@ export default function AuthForm() {
                             </CardFooter>
                         </Card>
                     </TabsContent>
-                </form>
                 <form onSubmit={login}>
                     <TabsContent value="login">
                         <Card>

@@ -17,7 +17,7 @@ interface Store {
     setIsCreating: (value: boolean) => void;
 };
 
-export const useStore = create<Store>((set) => ({
+const useStore = create<Store>((set) => ({
     token: savedToken ? JSON.parse(savedToken) : false,    
     isDeleting: false,
     isUpdating: false,
@@ -36,3 +36,5 @@ export const useStore = create<Store>((set) => ({
     setIsLoading: (value: boolean) => set({ isLoading: value }),
     setIsCreating: (value: boolean) => set({ isCreating: value }),
 }));
+
+export default useStore;

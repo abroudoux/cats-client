@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
 
 import loading from '@/lib/loading';
-import { useStore } from "@/lib/store";
+import useStore from "@/lib/store";
 
 import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';

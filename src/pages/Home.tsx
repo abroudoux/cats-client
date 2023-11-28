@@ -1,6 +1,7 @@
+import useStore from "@/lib/store";
+
 import { Button } from '@/components/ui/button';
 import Dashboard from '@/components/Dashboard';
-import { useStore } from "@/lib/store";
 
 
 export default function Home() {

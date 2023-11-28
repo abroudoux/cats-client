@@ -24,7 +24,7 @@ export default function Footer() {
                             <div className="space-y-1">
                                 <h4 className="text-sm font-semibold">@abroudoux</h4>
                                 <p className="text-sm">
-                                    Web Developer, creative coder & cats enjoyer
+                                    Web Developer & cats enjoyer
                                 </p>
                                 <div className="flex items-center pt-2">
                                     <span className="text-xs text-muted-foreground">

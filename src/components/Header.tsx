@@ -1,10 +1,11 @@
 import { Link } from 'react-router-dom';
 import { DashboardIcon, GitHubLogoIcon, EnterIcon, ExitIcon } from '@radix-ui/react-icons';
 
+import useStore from "@/lib/store";
+
 import { ModeToggle } from '@/components/config/mode-toggle';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { useStore } from "@/lib/store";
 
 
 export default function Header() {
