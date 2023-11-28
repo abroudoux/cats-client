@@ -141,7 +141,7 @@ export const CardCat : FC<CardCatProps> = ( props ) => {
                 <li className="cursor-pointer">
                     <Sheet>
                         <SheetTrigger asChild>
-                            <TooltipProvider>
+                            {/* <TooltipProvider>
                                 <Tooltip>
                                     <TooltipTrigger asChild>
                                     <Button variant="outline" size="icon" onClick={handleSheetOpen} disabled={isUpdating || isDeleting}>
@@ -154,7 +154,12 @@ export const CardCat : FC<CardCatProps> = ( props ) => {
                                         <span>Modify</span>
                                     </TooltipContent>
                                 </Tooltip>
-                            </TooltipProvider>
+                            </TooltipProvider> */}
+                            <Button variant="outline" size="icon" onClick={handleSheetOpen} disabled={isUpdating || isDeleting}>
+                                {isUpdating ?
+                                <Icons.spinner className="h-4 w-4 animate-spin" />  : '🔎'
+                                }
+                            </Button>
                         </SheetTrigger>
                         <SheetContent>
                             <SheetHeader>
@@ -201,7 +206,7 @@ export const CardCat : FC<CardCatProps> = ( props ) => {
                 <li className="cursor-pointer">
                     <AlertDialog>
                         <AlertDialogTrigger asChild>
-                            <TooltipProvider>
+                            {/* <TooltipProvider>
                                 <Tooltip>
                                     <TooltipTrigger asChild>
                                         <Button variant="outline" className="flex-col-center-center" size="icon" disabled={isDeleting || isUpdating}>
@@ -213,7 +218,11 @@ export const CardCat : FC<CardCatProps> = ( props ) => {
                                         <span>Delete</span>
                                     </TooltipContent>
                                 </Tooltip>
-                            </TooltipProvider>
+                            </TooltipProvider> */}
+                            <Button variant="outline" className="flex-col-center-center" size="icon" disabled={isDeleting || isUpdating}>
+                                {isDeleting ?
+                                    <Icons.spinner className="h-4 w-4 animate-spin" /> : '❌'}
+                            </Button>
                         </AlertDialogTrigger>
                         <AlertDialogContent>
                             <AlertDialogHeader>
