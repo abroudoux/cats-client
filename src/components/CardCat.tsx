@@ -1,5 +1,8 @@
 import { FC, useState } from 'react';
 
+import loading from '@/lib/loading';
+import { useStore } from "@/lib/store";
+
 import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
@@ -7,9 +10,8 @@ import { Input } from '@/components/ui/input';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { useToast } from '@/components/ui/use-toast';
 import { ToastAction } from '@/components/ui/toast';
-import { Loader2 } from 'lucide-react';
-import loading from '@/lib/loading';
-import { Icons } from './ui/icons';
+import { Icons } from '@/components/ui/icons';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 
 type CardCatProps = {
@@ -23,22 +25,21 @@ type CardCatProps = {
 
 export const CardCat : FC<CardCatProps> = ( props ) => {
 
+    const { isDeleting, isUpdating, isLoading, isCreating, setIsDeleting, setIsUpdating, setIsLoading } = useStore();
+
     const BASE_URL = "http://localhost:9090";
+
+    const { toast } = useToast();
 
     const [catData, setCatData] = useState({
         name : '',
         color : '',
     });
 
-    const [updatedCatData, setUpdatedCatData] = useState({
-        name: '',
-        color: '',
+    const [catDataUpdated, setCatDataUpdated] = useState({
+        name : '',
+        color : '',
     });
-
-    const [isDeleting, setIsDeleting] = useState(false);
-    const [isUpdating, setIsUpdating] = useState(false);
-
-    const { toast } = useToast();
 
     const handleDelete = async () => {
 
@@ -55,7 +56,7 @@ export const CardCat : FC<CardCatProps> = ( props ) => {
 
             if (response.ok) {
                 props.onCatDelete();
-                toast({title: "Cat successfully deleted !", action: (<ToastAction altText="Goto schedule to undo">OK</ToastAction>)});
+                toast({title: "Cat successfully deleted !", action: (<ToastAction altText="Understand">OK</ToastAction>)});
             } else {
                 toast({title: "Failed to delete cat", action: (<ToastAction altText="Understand">OK</ToastAction>)});
                 throw new Error('Failed to delete cat');
@@ -63,7 +64,7 @@ export const CardCat : FC<CardCatProps> = ( props ) => {
 
         } catch (error) {
             console.log("Error during cat deletion", error)
-            toast({title: "Error during cat deletion", action: (<ToastAction altText="Goto schedule to undo">Undo</ToastAction>),});
+            toast({title: "Error during cat deletion", action: (<ToastAction altText="Understand">OK</ToastAction>),});
         } finally {
             setIsDeleting(false);
         };
@@ -71,22 +72,29 @@ export const CardCat : FC<CardCatProps> = ( props ) => {
 
     const handleSheetOpen = async () => {
 
-        await loading(2000);
+        setIsLoading(true);
+        await loading(1000);
 
         try {
             const response = await fetch(`${BASE_URL}/cats/${props._id}`);
 
+            setIsUpdating(true);
+
             if (response.ok) {
+                setIsLoading(false);
                 const catData = await response.json();
                 setCatData(catData);
-                setUpdatedCatData(catData);
+                console.log(catData)
             } else {
+                setIsUpdating(false);
                 toast({title: "Failed to update cat", action: (<ToastAction altText="Understand">OK</ToastAction>)});
             };
 
         } catch (error) {
             console.error('Error fetching cat data', error);
-        };
+        } finally {
+            setIsUpdating(false);
+        }
     };
 
     const handleUpdate = async () => {
@@ -100,24 +108,28 @@ export const CardCat : FC<CardCatProps> = ( props ) => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(updatedCatData),
+                body: JSON.stringify(catDataUpdated),
             });
 
             if (response.ok) {
+                setCatData({ ...catData, ...catDataUpdated });
                 props.onCatUpdate();
-                toast({title: "Cat updated successfully", action: (<ToastAction altText="Goto schedule to undo">Undo</ToastAction>)});
+                toast({ title: "Cat updated successfully", action: (<ToastAction altText="Understand">Undo</ToastAction>) });
             } else {
-                toast({title: "Error during cat updated", action: (<ToastAction altText="Undersatnd">OK</ToastAction>)});
+                toast({ title: "Error during cat update", action: (<ToastAction altText="Understand">OK</ToastAction>) });
                 throw new Error('Failed to update cat');
             };
 
+            console.log(catDataUpdated);
         } catch (error) {
-            console.error('Error during cat deletion', error);
+            console.log("Error during cat update", error);
+            toast({title: "Error while cat update", description: "Try again", action: (<ToastAction altText="Understand">OK</ToastAction>),});
         } finally {
-            await new Promise(resolve => setTimeout(resolve, 2000));
             setIsUpdating(false);
         };
+
     };
+
 
     return (
         <li className="rounded-lg my-6 border-grey-light border-[1px] flex-row-center-between py-3 px-5 w-96" key={ props._id || 'defaultKey' }>
@@ -129,32 +141,58 @@ export const CardCat : FC<CardCatProps> = ( props ) => {
                 <li className="cursor-pointer">
                     <Sheet>
                         <SheetTrigger asChild>
-                            <Button variant="outline" size="icon" onClick={handleSheetOpen}>🔎</Button>
+                            {/* <TooltipProvider>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                    <Button variant="outline" size="icon" onClick={handleSheetOpen} disabled={isUpdating || isDeleting}>
+                                        {isUpdating ?
+                                        <Icons.spinner className="h-4 w-4 animate-spin" />  : '🔎'
+                                        }
+                                    </Button>
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                        <span>Modify</span>
+                                    </TooltipContent>
+                                </Tooltip>
+                            </TooltipProvider> */}
+                            <Button variant="outline" size="icon" onClick={handleSheetOpen} disabled={isUpdating || isDeleting || isLoading || isCreating}>
+                                {isUpdating ?
+                                <Icons.spinner className="h-4 w-4 animate-spin" />  : '🔎'
+                                }
+                            </Button>
                         </SheetTrigger>
                         <SheetContent>
                             <SheetHeader>
                                 <SheetTitle>Edit cat</SheetTitle>
                                 <SheetDescription>
-                                    Make changes to your cat here. Click save when you're done.
+                                    Make changes to your cat here.
                                 </SheetDescription>
                             </SheetHeader>
                             <div className="grid gap-4 py-4">
-                                <div className="grid grid-cols-4 items-center gap-4">
+                                <div className="grid grid-cols-4 items-center gap-4 h-10">
                                     <Label htmlFor="name" className="text-right">
                                         Name
                                     </Label>
-                                    <Input id="name" value={updatedCatData.name} className="col-span-3" onChange={(e) => setUpdatedCatData({ ...updatedCatData, name: e.target.value })} />
+                                    {isLoading ? 
+                                        <Icons.spinner className="mr-2 h-4 w-4 animate-spin" /> 
+                                        :
+                                        <Input id="name" className="col-span-3" defaultValue={catData.name} onChange={(e) => setCatDataUpdated({ ...catDataUpdated, name: e.target.value })}/>
+                                    }
                                 </div>
-                                <div className="grid grid-cols-4 items-center gap-4">
+                                <div className="grid grid-cols-4 items-center gap-4 h-10">
                                     <Label htmlFor="color" className="text-right">
                                         Color
                                     </Label>
-                                    <Input id="color" value={updatedCatData.color} className="col-span-3" onChange={(e) => setUpdatedCatData({ ...updatedCatData, color: e.target.value })} />
+                                    {isLoading ? 
+                                        <Icons.spinner className="mr-2 h-4 w-4 animate-spin" /> 
+                                        :
+                                        <Input id="color" className="col-span-3" defaultValue={catData.color} onChange={(e) => setCatDataUpdated({ ...catDataUpdated, color: e.target.value })}/>
+                                    }
                                 </div>
                             </div>
                             <SheetFooter>
                                 <SheetClose asChild>
-                                    <Button type="submit" onClick={handleUpdate} disabled={isUpdating}>
+                                    <Button type="submit" onClick={handleUpdate} disabled={isLoading}>
                                         {isUpdating && (
 											<Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
 										)}
@@ -168,7 +206,23 @@ export const CardCat : FC<CardCatProps> = ( props ) => {
                 <li className="cursor-pointer">
                     <AlertDialog>
                         <AlertDialogTrigger asChild>
-                            <Button variant="outline" size="icon">❌</Button>
+                            {/* <TooltipProvider>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <Button variant="outline" className="flex-col-center-center" size="icon" disabled={isDeleting || isUpdating}>
+                                            {isDeleting ?
+                                                <Icons.spinner className="h-4 w-4 animate-spin" /> : '❌'}
+                                        </Button>
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                        <span>Delete</span>
+                                    </TooltipContent>
+                                </Tooltip>
+                            </TooltipProvider> */}
+                            <Button variant="outline" className="flex-col-center-center" size="icon" disabled={isDeleting || isUpdating || isLoading || isCreating}>
+                                {isDeleting ?
+                                    <Icons.spinner className="h-4 w-4 animate-spin" /> : '❌'}
+                            </Button>
                         </AlertDialogTrigger>
                         <AlertDialogContent>
                             <AlertDialogHeader>

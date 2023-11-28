@@ -9,8 +9,8 @@ import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 export default function Footer() {
 
     return (
-        <footer className="w-full h-20 border-t-[1px] px-5 flex-row-center-between">
-            <p>© 2023-present
+        <footer className="w-full h-20 asbolute fixed bottom-0 border-t-[1px] px-5 flex-row-center-between">
+            <p>
                 <HoverCard>
                     <HoverCardTrigger asChild>
                         <Button variant="link"><a href="https://github.com/abroudoux" target="_blank">@abroudoux</a></Button>
