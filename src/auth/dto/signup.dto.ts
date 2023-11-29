@@ -8,7 +8,7 @@ export class SignUpDto {
     readonly name : string;
 
     @IsNotEmpty()
-    @IsEmail({}, { message : 'Please enter correct email' })
+    @IsEmail({}, { message: "Enter correct email" })
     readonly email : string;
 
     @IsNotEmpty()

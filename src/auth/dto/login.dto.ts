@@ -4,7 +4,7 @@ import { IsEmail, IsNotEmpty, IsString, MinLength } from 'class-validator';
 export class LoginDto {
 
     @IsNotEmpty()
-    @IsEmail({}, { message : 'Please enter correct email' })
+    @IsEmail({}, { message: "Enter correct email" })
     readonly email : string;
 
     @IsNotEmpty()
@@ -12,4 +12,4 @@ export class LoginDto {
     @MinLength(6)
     readonly password : string;
 
-};  
+};

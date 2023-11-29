@@ -1,31 +1,33 @@
-// import { Module } from '@nestjs/common';
-// import { ConfigService } from '@nestjs/config';
-// import { MongooseModule } from '@nestjs/mongoose';
-// import { PassportModule } from '@nestjs/passport';
-// import { JwtModule } from '@nestjs/jwt';
+import { Module } from '@nestjs/common';
+import { MongooseModule } from '@nestjs/mongoose';
+import { PassportModule } from '@nestjs/passport';
+import { JwtModule } from '@nestjs/jwt';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
-// import { AuthService } from '@/auth/services/auth.service';
-// import { AuthController } from '@/auth/controllers/auth.controller';
-// import { UsersSchema } from '@/users/models/user.model';
+import { AuthController } from '@/auth/auth.controller';
+import { AuthService } from '@/auth/auth.service';
+import { UserSchema } from '@/auth/schemas/user.schema';
 
 
-// @Module({
-//     imports: [
-//         PassportModule.register({ defaultStrategy: 'jwt' }),
-//         JwtModule.registerAsync({
-//             inject: [ConfigService],
-//             useFactory: (config: ConfigService) => {
-//                 return {
-//                     secret: config.get<string>('JWT_SECRET'),
-//                     signOptions: {
-//                         expiresIn: config.get<string | number>('JWT_EXPIRES'),
-//                     },
-//                 };
-//             },
-//         }),
-//         MongooseModule.forFeature([{ name: 'User', schema: UsersSchema }])
-//     ],
-//     controllers: [AuthController],
-//     providers: [AuthService]
-// })
-// export class AuthModule {}
+
+@Module({
+    imports: [
+        PassportModule.register({  defaultStrategy: 'jwt' }),
+        JwtModule.registerAsync({
+            imports: [ConfigModule],
+            inject: [ConfigService],
+            useFactory: async (config: ConfigService) => {
+                return {
+                    secret: config.get<string>('JWT_SCRET'),
+                    signOptions: {
+                        expiresIn : config.get<string | number>('JWT_EXPIRES')
+                    },
+                };
+            },
+        }),
+        MongooseModule.forFeature([{ name : 'User', schema : UserSchema }])
+    ],
+    controllers: [AuthController],
+    providers: [AuthService],
+})
+export class AuthModule {}
