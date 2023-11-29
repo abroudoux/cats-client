@@ -1,6 +1,7 @@
 import React, { ChangeEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import useStore from '@/lib/store';
 import loading from '@/lib/loading';
 
 import { Button } from '@/components/ui/button';
@@ -14,6 +15,8 @@ import { ToastAction } from '@/components/ui/toast';
 
 
 export default function AuthForm() {
+
+    const { token, signIn, setUsername } = useStore();
 
     const BASE_URL = "http://localhost:9090";
 
@@ -43,28 +46,45 @@ export default function AuthForm() {
 		};
 	};
 
-    const signIn = async () => {
+    const createUser = async () => {
 
         setIsLoading(true);
         await loading(2000);
 
-        try {
-            const response = await fetch(`${BASE_URL}/users`, {
-				method: 'POST',
-				headers: {
-			  		'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({ name, email, password }),
-		  	});
+        if (name.length <= 1) {
+            toast({title: "Choose a username with 2 characters or more", description: "Please retry" ,action: (<ToastAction altText="Understand">OK</ToastAction>),});
+        } else if (email.length <= 1) {
+            toast({title: "Choose an email with 2 characters or more", description: "Please retry" ,action: (<ToastAction altText="Understand">OK</ToastAction>),});
+        } else if (password.length <= 1) {
+            toast({title: "Choose a password with 2 characters or more", description: "Please retry" ,action: (<ToastAction altText="Understand">OK</ToastAction>),});
+        } else {
+            try {
+                const response = await fetch(`${BASE_URL}/users`, {
+                    method: 'POST',
+                    headers: {
+                          'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ name, email, password }),
+                  });
 
-            console.log(response);
+                if (response.ok) {
+                    navigate("/");
+                    setUsername(name);
+                    signIn();
+                } else {
+                    toast({title: "Failed during registrationt", description: "Please retry" ,action: (<ToastAction altText="Understand">OK</ToastAction>),});
+                    throw new Error('Failed during registration');
+                };
 
-        } catch (error) {
-            console.log("Error during registration", error);
-			toast({title: "Error while registration", description: "Try again", action: (<ToastAction altText="Understand">OK</ToastAction>),});
-        } finally {
-            setIsLoading(false);
+            } catch (error) {
+                console.log("Error during registration", error);
+                toast({title: "Error during registration", description: "Try again", action: (<ToastAction altText="Understand">OK</ToastAction>),});
+            } finally {
+                setIsLoading(false);
+            };
         };
+
+        setIsLoading(false);
     };
 
     async function login(event: React.SyntheticEvent) {
@@ -106,7 +126,7 @@ export default function AuthForm() {
                                 </div>
                             </CardContent>
                             <CardFooter>
-                                <Button disabled={isLoading} onClick={signIn}>
+                                <Button disabled={isLoading} onClick={createUser}>
                                     {isLoading && (
                                         <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                                     )}

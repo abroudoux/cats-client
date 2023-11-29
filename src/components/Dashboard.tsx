@@ -16,12 +16,11 @@ import { Icons } from '@/components/ui/icons';
 
 export default function Dashboard() {
 
-	const userName = 'Arthur';
 	const BASE_URL = "http://localhost:9090"
 
 	const { toast } = useToast();
 
-	const { isDeleting, isUpdating, isCreating, setIsCreating } = useStore();
+	const { isDeleting, isUpdating, isCreating, username, setIsCreating } = useStore();
 
 	const [error, setError] = useState();
 	const [cats, setCats] = useState<Cat[]>([]);
@@ -103,7 +102,7 @@ export default function Dashboard() {
 
 	return (
 		<section className="page">
-			<h1 className="text-3xl mb-4 text-center">Hello {userName}, meet your (cutes) friends :</h1>
+			<h1 className="text-3xl mb-4 text-center">Hello {username}, meet your (cutes) friends :</h1>
 			{cats.length === 0 ? (
       			<p className="page text-xl font-normal">No cats found. Add a new cat?</p>
     		) : (

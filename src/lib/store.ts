@@ -9,20 +9,23 @@ interface Store {
     isUpdating: boolean;
     isLoading: boolean;
     isCreating: boolean;
+    username: string;
     signIn: () => void;
     signOut: () => void;
     setIsDeleting: (value: boolean) => void;
     setIsUpdating: (value: boolean) => void;
     setIsLoading: (value: boolean) => void;
     setIsCreating: (value: boolean) => void;
+    setUsername: (value: string) => void;
 };
 
 const useStore = create<Store>((set) => ({
-    token: savedToken ? JSON.parse(savedToken) : false,    
+    token: savedToken ? JSON.parse(savedToken) : false,
     isDeleting: false,
     isUpdating: false,
     isLoading: false,
     isCreating: false,
+    username: '',
     signIn: () => {
         set({ token: true });
         localStorage.setItem('token', JSON.stringify(true));
@@ -35,6 +38,7 @@ const useStore = create<Store>((set) => ({
     setIsUpdating: (value: boolean) => set({ isUpdating: value }),
     setIsLoading: (value: boolean) => set({ isLoading: value }),
     setIsCreating: (value: boolean) => set({ isCreating: value }),
+    setUsername: (value: string) => set({ username: value}),
 }));
 
 export default useStore;
