@@ -16,7 +16,7 @@ import { ToastAction } from '@/components/ui/toast';
 
 export default function AuthForm() {
 
-    const { token, signIn, setUsername } = useStore();
+    const { token, username, signIn, setUsername } = useStore();
 
     const BASE_URL = "http://localhost:9090";
 
@@ -97,74 +97,78 @@ export default function AuthForm() {
         }, 2000)
     };
 
+    if (token) {
+        return <div>Welcome to your account {username}</div>
+    };
+
     return (
         <Tabs defaultValue="signin" className="w-[400px]">
-                <TabsList className="grid w-full grid-cols-2">
-                    <TabsTrigger value="signin">Sign In</TabsTrigger>
-                    <TabsTrigger value="login">Log In</TabsTrigger>
-                </TabsList>
-                    <TabsContent value="signin">
-                        <Card>
-                            <CardHeader>
-                                <CardTitle>Sign In</CardTitle>
-                                <CardDescription>
-                                    New here ? Create an account to manage your cats
-                                </CardDescription>
-                            </CardHeader>
-                            <CardContent className="space-y-2">
-                                <div className="space-y-1">
-                                    <Label htmlFor="name">Name</Label>
-                                    <Input autoComplete="off" id="name" type="text" value={name} placeholder="Your name" onChange={handleChange} />
-                                </div>
-                                <div className="space-y-1">
-                                    <Label htmlFor="email">Email</Label>
-                                    <Input autoComplete="off" id="email" type="email" value={email} placeholder="Your email" onChange={handleChange} />
-                                </div>
-                                <div className="space-y-1">
-                                    <Label htmlFor="password">Password</Label>
-                                    <Input id="password" type="password" value={password} placeholder="Enter a password" onChange={handleChange} />
-                                </div>
-                            </CardContent>
-                            <CardFooter>
-                                <Button disabled={isLoading} onClick={createUser}>
-                                    {isLoading && (
-                                        <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-                                    )}
-                                    Create
-                                </Button>
-                            </CardFooter>
-                        </Card>
-                    </TabsContent>
-                <form onSubmit={login}>
-                    <TabsContent value="login">
-                        <Card>
-                            <CardHeader>
-                                <CardTitle>Log In</CardTitle>
-                                <CardDescription>
-                                    Access your space
-                                </CardDescription>
-                            </CardHeader>
-                            <CardContent className="space-y-2">
-                                <div className="space-y-1">
-                                    <Label htmlFor="email">Email</Label>
-                                    <Input id="email" type="email" placeholder="Your email" />
-                                </div>
-                                <div className="space-y-1">
-                                    <Label htmlFor="password">Password</Label>
-                                    <Input id="password" type="password" placeholder="Enter yout password" />
-                                </div>
-                            </CardContent>
-                            <CardFooter>
-                                <Button disabled={isLoading}>
-                                    {isLoading && (
-                                        <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-                                    )}
-                                    Connect
-                                </Button>
-                            </CardFooter>
-                        </Card>
-                    </TabsContent>
-                </form>
-            </Tabs>
+            <TabsList className="grid w-full grid-cols-2">
+                <TabsTrigger value="signin">Sign In</TabsTrigger>
+                <TabsTrigger value="login">Log In</TabsTrigger>
+            </TabsList>
+                <TabsContent value="signin">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Sign In</CardTitle>
+                            <CardDescription>
+                                New here ? Create an account to manage your cats
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-2">
+                            <div className="space-y-1">
+                                <Label htmlFor="name">Name</Label>
+                                <Input autoComplete="off" id="name" type="text" value={name} placeholder="Your name" onChange={handleChange} />
+                            </div>
+                            <div className="space-y-1">
+                                <Label htmlFor="email">Email</Label>
+                                <Input autoComplete="off" id="email" type="email" value={email} placeholder="Your email" onChange={handleChange} />
+                            </div>
+                            <div className="space-y-1">
+                                <Label htmlFor="password">Password</Label>
+                                <Input id="password" type="password" value={password} placeholder="Enter a password" onChange={handleChange} />
+                            </div>
+                        </CardContent>
+                        <CardFooter>
+                            <Button disabled={isLoading} onClick={createUser}>
+                                {isLoading && (
+                                    <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                                )}
+                                Create
+                            </Button>
+                        </CardFooter>
+                    </Card>
+                </TabsContent>
+            <form onSubmit={login}>
+                <TabsContent value="login">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Log In</CardTitle>
+                            <CardDescription>
+                                Access your space
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-2">
+                            <div className="space-y-1">
+                                <Label htmlFor="email">Email</Label>
+                                <Input id="email" type="email" placeholder="Your email" />
+                            </div>
+                            <div className="space-y-1">
+                                <Label htmlFor="password">Password</Label>
+                                <Input id="password" type="password" placeholder="Enter yout password" />
+                            </div>
+                        </CardContent>
+                        <CardFooter>
+                            <Button disabled={isLoading}>
+                                {isLoading && (
+                                    <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                                )}
+                                Connect
+                            </Button>
+                        </CardFooter>
+                    </Card>
+                </TabsContent>
+            </form>
+        </Tabs>
     );
 };

@@ -2,6 +2,7 @@ import { create } from 'zustand';
 
 
 const savedToken = localStorage.getItem('token');
+const username = localStorage.getItem('username');
 
 interface Store {
     token: boolean;
@@ -25,7 +26,7 @@ const useStore = create<Store>((set) => ({
     isUpdating: false,
     isLoading: false,
     isCreating: false,
-    username: '',
+    username: username ? JSON.parse(username) : '',
     signIn: () => {
         set({ token: true });
         localStorage.setItem('token', JSON.stringify(true));
@@ -33,12 +34,16 @@ const useStore = create<Store>((set) => ({
     signOut: () => {
         set({ token: false });
         localStorage.removeItem('token');
+        localStorage.removeItem('username');
     },
     setIsDeleting: (value: boolean) => set({ isDeleting: value }),
     setIsUpdating: (value: boolean) => set({ isUpdating: value }),
     setIsLoading: (value: boolean) => set({ isLoading: value }),
     setIsCreating: (value: boolean) => set({ isCreating: value }),
-    setUsername: (value: string) => set({ username: value}),
+    setUsername: (value: string) => {
+        set({ username: value});
+        localStorage.setItem('username', JSON.stringify(true));
+    },
 }));
 
 export default useStore;
