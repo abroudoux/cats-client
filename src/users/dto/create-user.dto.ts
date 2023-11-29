@@ -1,6 +1,4 @@
-import { IsArray, IsNotEmpty, IsString } from 'class-validator';
-
-import { Cats } from '@/users/models/user.model';
+import { IsNotEmpty, IsString } from 'class-validator';
 
 
 export class CreateUserDto {
@@ -9,7 +7,11 @@ export class CreateUserDto {
     @IsString()
     readonly name : string;
 
-    // @IsNotEmpty()
-    // @IsArray()
-    // readonly cats : Cats;
+    @IsNotEmpty()
+    @IsString()
+    readonly email : string;
+
+    @IsNotEmpty()
+    @IsString()
+    readonly password : string;
 };
