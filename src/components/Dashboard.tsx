@@ -1,7 +1,8 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 
 import loading from '@/lib/loading';
-import useStore from "@/lib/store";
+import useStore from '@/lib/store';
+import { Cat } from '@/models/CardCatProps';
 
 import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
@@ -13,21 +14,14 @@ import { ToastAction } from '@/components/ui/toast';
 import { Icons } from '@/components/ui/icons';
 
 
-interface Cat {
-	_id : string,
-	name : string,
-	color : string
-};
-
-
 export default function Dashboard() {
-
-    const { isDeleting, isUpdating, isCreating, setIsCreating } = useStore();
 
 	const userName = 'Arthur';
 	const BASE_URL = "http://localhost:9090"
 
 	const { toast } = useToast();
+
+	const { isDeleting, isUpdating, isCreating, setIsCreating } = useStore();
 
 	const [error, setError] = useState();
 	const [cats, setCats] = useState<Cat[]>([]);
@@ -76,7 +70,7 @@ export default function Dashboard() {
 				setColor(e.target.value);
 				break;
 			default:
-			break;
+				break;
 		};
 	};
 

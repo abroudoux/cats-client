@@ -49,7 +49,7 @@ export default function AuthForm() {
         await loading(2000);
 
         try {
-            const response = await fetch(`${BASE_URL}/cats`, {
+            const response = await fetch(`${BASE_URL}/users`, {
 				method: 'POST',
 				headers: {
 			  		'Content-Type': 'application/json',
