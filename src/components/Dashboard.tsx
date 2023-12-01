@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
-import { Reorder } from 'framer-motion';
+import { Reorder, motion } from 'framer-motion';
 
 import loading from '@/lib/loading';
 import useStore from '@/lib/store';
@@ -14,6 +14,17 @@ import { useToast } from '@/components/ui/use-toast';
 import { ToastAction } from '@/components/ui/toast';
 import { Icons } from '@/components/ui/icons';
 
+
+const cardVariants = {
+	visible : {
+		x: 0,
+		opacity: 1,
+	},
+	hidden : {
+		x: 100,
+		opacity: 0,
+	},
+};
 
 export default function Dashboard() {
 
@@ -107,18 +118,13 @@ export default function Dashboard() {
 			{cats.length === 0 ? (
       			<p className="page text-xl font-normal">No cats found. Add a new cat?</p>
     		) : (
-      			<ul>
-					<Reorder.Group axis="y" values={cats} onReorder={setCats}>
-      					{cats.map((cat) => (
-        					<Reorder.Item key={cat._id} value={cat}>
-          						<CardCat key={cat._id} _id={cat._id} name={cat.name} color={cat.color} onCatDelete={fetchCats} onCatUpdate={fetchCats} />
-        					</Reorder.Item>
-      					))}
-    				</Reorder.Group>
-        			{/* {cats.map((cat) => {
-          				return <CardCat key={cat._id} _id={cat._id} name={cat.name} color={cat.color} onCatDelete={fetchCats} onCatUpdate={fetchCats} />;
-        			})} */}
-      			</ul>
+				<Reorder.Group axis="y" values={cats} onReorder={setCats}>
+					{cats.map((cat) => (
+						<Reorder.Item key={cat._id} value={cat}>
+							<CardCat key={cat._id} _id={cat._id} name={cat.name} color={cat.color} onCatDelete={fetchCats} onCatUpdate={fetchCats} />
+						</Reorder.Item>
+					))}
+				</Reorder.Group>
     		)}
 			<div className="flex-row-center-between gap-3">
 				<p className="text-lg">Add a new cat ?</p>
