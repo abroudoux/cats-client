@@ -1,15 +1,16 @@
 import { Link } from 'react-router-dom';
 import { DashboardIcon, GitHubLogoIcon, EnterIcon, ExitIcon } from '@radix-ui/react-icons';
 
-import { ModeToggle } from '@/components/config/mode-toggle';
+import useStore from "@/lib/store";
+
+import { ModeToggle } from '@/config/mode-toggle';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { useStore } from "@/lib/store";
 
 
 export default function Header() {
 
-    const { token, signIn, signOut } = useStore();
+    const { token, username, signOut } = useStore();
 
     return (
         <header className="w-full h-20 border-b-[1px] px-5 fixed top-0 flex-row-center-between">
@@ -21,7 +22,7 @@ export default function Header() {
                     <DropdownMenuTrigger>
                         <Button>
                             {token ?
-                                'Arthur' : 'Connect'
+                                username : 'Connect'
                             }
                         </Button>
                     </DropdownMenuTrigger>
@@ -43,7 +44,7 @@ export default function Header() {
                             </>
                             :
                             <DropdownMenuItem>
-                                <p className="flex-row-center-between gap-1" onClick={signIn}><ExitIcon/>Sign In</p>
+                                <Link className="flex-row-center-between gap-1" to="/auth"><ExitIcon/>Sign In</Link>
                             </DropdownMenuItem>
                         }
                         <DropdownMenuItem>

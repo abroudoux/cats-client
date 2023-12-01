@@ -3,8 +3,9 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import Home from '@/pages/Home';
 import Auth from '@/pages/Auth';
+import Account from '@/pages/Account';
 
-import { ThemeProvider } from '@/components/config/theme-provider';
+import { ThemeProvider } from '@/config/theme-provider';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Toaster } from '@/components/ui/toaster';
@@ -19,6 +20,7 @@ const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 			<Routes>
 					<Route path="/" element={<Home />}></Route>
 					<Route path="/auth" element={<Auth /> }></Route>
+					<Route path="/account" element={<Account /> }></Route>
 			</Routes>
 			<Footer />
 			<Toaster />

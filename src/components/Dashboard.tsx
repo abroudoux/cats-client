@@ -1,5 +1,9 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 
+import loading from '@/lib/loading';
+import useStore from '@/lib/store';
+import { Cat } from '@/models/cat.model';
+
 import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -8,25 +12,15 @@ import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 import { ToastAction } from '@/components/ui/toast';
 import { Icons } from '@/components/ui/icons';
-import loading from '@/lib/loading';
-import { useStore } from "@/lib/store";
-
-
-interface Cat {
-	_id : string,
-	name : string,
-	color : string
-};
 
 
 export default function Dashboard() {
 
-    const { isDeleting, isUpdating, isCreating, setIsCreating } = useStore();
-
-	const userName = 'Arthur';
 	const BASE_URL = "http://localhost:9090"
 
 	const { toast } = useToast();
+
+	const { isDeleting, isUpdating, isCreating, username, setIsCreating } = useStore();
 
 	const [error, setError] = useState();
 	const [cats, setCats] = useState<Cat[]>([]);
@@ -70,12 +64,12 @@ export default function Dashboard() {
 		switch (e.target.id) {
 			case 'name':
 				setName(e.target.value);
-			break;
+				break;
 			case 'color':
 				setColor(e.target.value);
-			break;
+				break;
 			default:
-			break;
+				break;
 		};
 	};
 
@@ -108,7 +102,7 @@ export default function Dashboard() {
 
 	return (
 		<section className="page">
-			<h1 className="text-3xl mb-4 text-center">Hello {userName}, meet your (cutes) friends :</h1>
+			<h1 className="text-3xl mb-4 text-center">Hello {username}, meet your (cutes) friends :</h1>
 			{cats.length === 0 ? (
       			<p className="page text-xl font-normal">No cats found. Add a new cat?</p>
     		) : (
