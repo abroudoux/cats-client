@@ -5,7 +5,7 @@ import Home from '@/pages/Home';
 import Auth from '@/pages/Auth';
 import Account from '@/pages/Account';
 
-import { ThemeProvider } from '@/components/config/theme-provider';
+import { ThemeProvider } from '@/config/theme-provider';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Toaster } from '@/components/ui/toaster';
