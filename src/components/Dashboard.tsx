@@ -1,4 +1,5 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
+import { Reorder } from 'framer-motion';
 
 import loading from '@/lib/loading';
 import useStore from '@/lib/store';
@@ -107,9 +108,16 @@ export default function Dashboard() {
       			<p className="page text-xl font-normal">No cats found. Add a new cat?</p>
     		) : (
       			<ul>
-        			{cats.map((cat) => {
+					<Reorder.Group axis="y" values={cats} onReorder={setCats}>
+      					{cats.map((cat) => (
+        					<Reorder.Item key={cat._id} value={cat}>
+          						<CardCat key={cat._id} _id={cat._id} name={cat.name} color={cat.color} onCatDelete={fetchCats} onCatUpdate={fetchCats} />
+        					</Reorder.Item>
+      					))}
+    				</Reorder.Group>
+        			{/* {cats.map((cat) => {
           				return <CardCat key={cat._id} _id={cat._id} name={cat.name} color={cat.color} onCatDelete={fetchCats} onCatUpdate={fetchCats} />;
-        			})}
+        			})} */}
       			</ul>
     		)}
 			<div className="flex-row-center-between gap-3">
