@@ -2,7 +2,7 @@ import { FC } from 'react';
 
 import loading from '@/lib/loading';
 import useStore from "@/lib/store";
-import { CardCatProps } from '@/models/CardCatProps';
+import { CatProps } from '@/models/cat.model';
 
 import { Button } from '@/components/ui/button';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
@@ -11,7 +11,7 @@ import { ToastAction } from '@/components/ui/toast';
 import { Icons } from '@/components/ui/icons';
 
 
-export const DeleteCat : FC<CardCatProps> = ( props ) => {
+export const DeleteCat : FC<CatProps> = ( props ) => {
 
     const { isDeleting, isUpdating, isLoading, isCreating, setIsDeleting } = useStore();
 

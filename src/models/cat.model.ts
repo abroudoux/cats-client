@@ -1,4 +1,4 @@
-export type CardCatProps = {
+export type CatProps = {
     _id : string;
     name : string;
     color : string;

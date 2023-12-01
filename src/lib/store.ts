@@ -42,7 +42,7 @@ const useStore = create<Store>((set) => ({
     setIsCreating: (value: boolean) => set({ isCreating: value }),
     setUsername: (value: string) => {
         set({ username: value});
-        localStorage.setItem('username', JSON.stringify(true));
+        localStorage.setItem('username', JSON.stringify(value));
     },
 }));
 

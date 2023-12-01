@@ -3,10 +3,10 @@ import { FC } from 'react';
 import { EditCat } from '@/components/EditCat';
 import { DeleteCat } from '@/components/DeleteCat';
 
-import { CardCatProps } from '@/models/CardCatProps';
+import { CatProps } from '@/models/cat.model';
 
 
-export const CardCat : FC<CardCatProps> = ( props ) => {
+export const CardCat : FC<CatProps> = ( props ) => {
     return (
         <li className="rounded-lg my-6 border-grey-light border-[1px] flex-row-center-between py-3 px-5 w-96" key={ props._id || 'defaultKey' }>
             <ul className="flex-col-center-between">

@@ -2,7 +2,7 @@ import { FC, useState } from 'react';
 
 import loading from '@/lib/loading';
 import useStore from "@/lib/store";
-import { CardCatProps } from '@/models/CardCatProps';
+import { CatProps } from '@/models/cat.model';
 
 import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
@@ -13,7 +13,7 @@ import { ToastAction } from '@/components/ui/toast';
 import { Icons } from '@/components/ui/icons';
 
 
-export const EditCat : FC<CardCatProps> = ( props ) => {
+export const EditCat : FC<CatProps> = ( props ) => {
 
     const { isDeleting, isUpdating, isLoading, isCreating, setIsUpdating, setIsLoading } = useStore();
 

@@ -2,7 +2,7 @@ import React, { ChangeEvent, useEffect, useState } from 'react';
 
 import loading from '@/lib/loading';
 import useStore from '@/lib/store';
-import { Cat } from '@/models/CardCatProps';
+import { Cat } from '@/models/cat.model';
 
 import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';

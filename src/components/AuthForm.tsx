@@ -62,7 +62,7 @@ export default function AuthForm() {
                 const response = await fetch(`${BASE_URL}/users`, {
                     method: 'POST',
                     headers: {
-                          'Content-Type': 'application/json',
+                        'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({ name, email, password }),
                   });
@@ -70,6 +70,7 @@ export default function AuthForm() {
                 if (response.ok) {
                     navigate("/");
                     setUsername(name);
+                    console.log(name, email, password)
                     signIn();
                 } else {
                     toast({title: "Failed during registrationt", description: "Please retry" ,action: (<ToastAction altText="Understand">OK</ToastAction>),});
