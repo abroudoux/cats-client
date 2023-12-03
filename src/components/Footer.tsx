@@ -2,14 +2,14 @@ import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { Button } from '@/components/ui/button';
-import { HoverCard, HoverCardContent, HoverCardTrigger } from './ui/hover-card';
-import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 
 export default function Footer() {
 
     return (
-        <footer className="w-full h-20 asbolute fixed bottom-0 border-t-[1px] px-5 flex-row-center-between">
+        <footer className="w-full bg-background h-20 asbolute fixed bottom-0 border-t-[1px] px-5 flex-row-center-between">
             <p>
                 <HoverCard>
                     <HoverCardTrigger asChild>

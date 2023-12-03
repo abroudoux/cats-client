@@ -1,8 +1,10 @@
 import React, { ChangeEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 
 import useStore from '@/lib/store';
 import loading from '@/lib/loading';
+import { BASE_URL } from '@/lib/keys';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
@@ -10,15 +12,11 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Icons } from '@/components/ui/icons';
-import { useToast } from '@/components/ui/use-toast';
-import { ToastAction } from '@/components/ui/toast';
 
 
 export default function AuthForm() {
 
     const { token, username, signIn, setUsername } = useStore();
-
-    const BASE_URL = "http://localhost:9090";
 
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -27,8 +25,6 @@ export default function AuthForm() {
     const navigate = useNavigate();
 
     const [isLoading, setIsLoading] = React.useState<boolean>(false);
-
-    const { toast } = useToast();
 
     const handleChange = (e : ChangeEvent<HTMLInputElement>) => {
 		switch (e.target.id) {
@@ -52,11 +48,11 @@ export default function AuthForm() {
         await loading(2000);
 
         if (name.length <= 1) {
-            toast({title: "Choose a username with 2 characters or more", description: "Please retry" ,action: (<ToastAction altText="Understand">OK</ToastAction>),});
+            toast.error('Choose a username with 2 characters or more');
         } else if (email.length <= 1) {
-            toast({title: "Choose an email with 2 characters or more", description: "Please retry" ,action: (<ToastAction altText="Understand">OK</ToastAction>),});
+            toast.error('Choose an email with 2 characters or more');
         } else if (password.length <= 1) {
-            toast({title: "Choose a password with 2 characters or more", description: "Please retry" ,action: (<ToastAction altText="Understand">OK</ToastAction>),});
+            toast.error('Choose a password with 6 characters or more');
         } else {
             try {
                 const response = await fetch(`${BASE_URL}/users`, {
@@ -73,13 +69,12 @@ export default function AuthForm() {
                     console.log(name, email, password)
                     signIn();
                 } else {
-                    toast({title: "Failed during registrationt", description: "Please retry" ,action: (<ToastAction altText="Understand">OK</ToastAction>),});
+                    toast.error('Failed during registration');
                     throw new Error('Failed during registration');
                 };
 
-            } catch (error) {
-                console.log("Error during registration", error);
-                toast({title: "Error during registration", description: "Try again", action: (<ToastAction altText="Understand">OK</ToastAction>),});
+            } catch (error: any) {
+                toast.error('Error during registration', error.message);
             } finally {
                 setIsLoading(false);
             };
@@ -96,10 +91,6 @@ export default function AuthForm() {
             setIsLoading(false);
             navigate("/");
         }, 2000)
-    };
-
-    if (token) {
-        return <div>Welcome to your account {username}</div>
     };
 
     return (
