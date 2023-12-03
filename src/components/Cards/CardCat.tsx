@@ -1,8 +1,8 @@
 import { FC } from 'react';
 import { motion } from 'framer-motion';
 
-import { EditCat } from '@/components/EditCat';
-import { DeleteCat } from '@/components/DeleteCat';
+import { EditCat } from '@/components/Cards/EditCat';
+import { DeleteCat } from '@/components/Cards/DeleteCat';
 
 import { CatProps } from '@/models/cat.model';
 
