@@ -16,8 +16,6 @@ import { Icons } from '@/components/ui/icons';
 
 export default function Dashboard() {
 
-	const BASE_URL = "http://localhost:9090"
-
 	const { toast } = useToast();
 
 	const { isDeleting, isUpdating, isCreating, username, setIsCreating } = useStore();
@@ -35,7 +33,7 @@ export default function Dashboard() {
 		await loading(2000);
 
 		try {
-			const response = await fetch(`${BASE_URL}/cats`, {
+			const response = await fetch(`api/cats`, {
 				method: 'POST',
 				headers: {
 			  		'Content-Type': 'application/json',
@@ -78,7 +76,7 @@ export default function Dashboard() {
 		setIsLoading(true);
 
 		try {
-			const response = await fetch(`${BASE_URL}/cats`);
+			const response = await fetch(`api/cats`);
 			const cats = (await response.json()) as Cat[];
 			setCats(cats);
 		} catch (e : any) {

@@ -3,7 +3,6 @@
     "author": "Arthur Broudoux <abroudoux>",
     "description": "",
     "license": "MIT",
-    "private": "false",
     "scripts": {
         "dev": "vite",
         "build": "tsc && vite build",

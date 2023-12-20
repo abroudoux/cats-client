@@ -15,8 +15,6 @@ export const DeleteCat : FC<CatProps> = ( props ) => {
 
     const { isDeleting, isUpdating, isLoading, isCreating, setIsDeleting } = useStore();
 
-    const BASE_URL = "http://localhost:9090";
-
     const { toast } = useToast();
 
 
@@ -26,7 +24,7 @@ export const DeleteCat : FC<CatProps> = ( props ) => {
         await loading(2000);
 
         try {
-            const response = await fetch(`${BASE_URL}/cats/${props._id}`, {
+            const response = await fetch(`api/cats/${props._id}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',

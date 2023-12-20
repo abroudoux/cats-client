@@ -17,8 +17,6 @@ export const EditCat : FC<CatProps> = ( props ) => {
 
     const { isDeleting, isUpdating, isLoading, isCreating, setIsUpdating, setIsLoading } = useStore();
 
-    const BASE_URL = "http://localhost:9090";
-
     const { toast } = useToast();
 
     const [catData, setCatData] = useState({
@@ -37,7 +35,7 @@ export const EditCat : FC<CatProps> = ( props ) => {
         await loading(1000);
 
         try {
-            const response = await fetch(`${BASE_URL}/cats/${props._id}`);
+            const response = await fetch(`api/cats/${props._id}`);
 
             setIsUpdating(true);
 
@@ -64,7 +62,7 @@ export const EditCat : FC<CatProps> = ( props ) => {
         await loading(2000);
 
         try {
-            const response = await fetch(`${BASE_URL}/cats/${props._id}`, {
+            const response = await fetch(`api/cats/${props._id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

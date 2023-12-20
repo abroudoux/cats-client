@@ -18,8 +18,6 @@ export default function AuthForm() {
 
     const { token, username, signIn, setUsername } = useStore();
 
-    const BASE_URL = "http://localhost:9090";
-
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -59,7 +57,7 @@ export default function AuthForm() {
             toast({title: "Choose a password with 2 characters or more", description: "Please retry" ,action: (<ToastAction altText="Understand">OK</ToastAction>),});
         } else {
             try {
-                const response = await fetch(`${BASE_URL}/users`, {
+                const response = await fetch(`api/users`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

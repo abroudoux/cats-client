@@ -8,7 +8,7 @@ import path from "path";
 export default defineConfig({
     envPrefix: 'REACT_APP_',
     build: {
-        outDir: 'build',
+        outDir: 'dist',
     },
     plugins: [
         react(),
@@ -23,5 +23,13 @@ export default defineConfig({
         alias: {
             "@": path.resolve(__dirname, "./src"),
         },
-    }
+    },
+    server: {
+        proxy: {
+            '/api': {
+                target: 'http://localhost:8080',
+                changeOrigin: true
+            },
+        },
+    },
 });
