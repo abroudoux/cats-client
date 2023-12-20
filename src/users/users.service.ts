@@ -35,7 +35,7 @@ export class UsersService {
         return await newUser.save();
     };
 
-    async deleteUser(id : string) : Promise<User> {
+    async deleteUser(id : string) : Promise<User | null> {
         const isValidId = mongoose.isValidObjectId(id);
 
         if (!isValidId) {
@@ -48,7 +48,7 @@ export class UsersService {
             throw new NotFoundException('User not found');
         };
 
-        return userDeleted;
+        return userDeleted as unknown as User;
     };
 
     async deleteAllUsers() : Promise<void> {

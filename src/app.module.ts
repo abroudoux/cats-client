@@ -1,5 +1,7 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 import config from '@/config/keys';
 
@@ -11,11 +13,15 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 
 
+
 @Module({
     imports: [
-        CatsModule, 
-        MongooseModule.forRoot(config.mongoURI), 
-        UsersModule, 
+        CatsModule,
+        MongooseModule.forRoot('mongodb+srv://abroudoux:M7i24gaKd33hOpeB@cluster0.vxt85wi.mongodb.net/?retryWrites=true&w=majority'),
+        UsersModule,
+        ServeStaticModule.forRoot({
+            rootPath: join(__dirname, '../..', 'cats-client', 'dist'),
+        }),
     ],
     controllers: [AppController],
     providers: [AppService],

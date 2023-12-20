@@ -37,7 +37,7 @@ export class CatsService {
         return await newCat.save();
     };
 
-    async deleteCat(id : string) : Promise<Cat> {
+    async deleteCat(id : string) : Promise<Cat | null> {
         const isValidId = mongoose.isValidObjectId(id);
 
         if (!isValidId) {
@@ -50,7 +50,7 @@ export class CatsService {
             throw new NotFoundException('Cat not found');
         };
 
-        return catDeleted;
+        return catDeleted as unknown as Cat;
     };
 
     async updateCat(id : string, cat : Cat) : Promise<Cat> {
