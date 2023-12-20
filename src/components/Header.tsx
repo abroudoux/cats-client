@@ -3,7 +3,7 @@ import { DashboardIcon, GitHubLogoIcon, EnterIcon, ExitIcon } from '@radix-ui/re
 
 import useStore from "@/lib/store";
 
-import { ModeToggle } from '@/config/mode-toggle';
+import { ModeToggle } from '@/components/ui/mode-toggle';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
