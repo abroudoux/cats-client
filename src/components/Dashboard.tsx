@@ -1,4 +1,6 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
+import { Reorder } from 'framer-motion';
+import { toast } from 'sonner';
 
 import loading from '@/lib/loading';
 import useStore from '@/lib/store';
@@ -7,16 +9,13 @@ import { Cat } from '@/models/cat.model';
 import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { CardCat } from '@/components/CardCat';
+import { CardCat } from '@/components/Cards/CardCat';
 import { Button } from '@/components/ui/button';
-import { useToast } from '@/components/ui/use-toast';
-import { ToastAction } from '@/components/ui/toast';
 import { Icons } from '@/components/ui/icons';
 
 
-export default function Dashboard() {
 
-	const { toast } = useToast();
+export default function Dashboard() {
 
 	const { isDeleting, isUpdating, isCreating, username, setIsCreating } = useStore();
 
@@ -44,15 +43,14 @@ export default function Dashboard() {
 			if (response.ok) {
 				const newCat = (await response.json()) as Cat;
 				setCats((prevCats) => [...prevCats, newCat]);
-			  	toast({title: "Cat successfully created !", action: (<ToastAction altText="Goto schedule to undo">OK</ToastAction>),});
+				toast.success('Cat successfully created !');
 			} else {
-				toast({title: "Failed to create cat", action: (<ToastAction altText="Understand">OK</ToastAction>),});
+				toast.error('Failed to create cat');
 				throw new Error('Failed to create cat');
 			};
 
-		} catch (error) {
-		  	console.log("Error during cat creation", error);
-			toast({title: "Error while cat creation", description: "Try again", action: (<ToastAction altText="Understand">OK</ToastAction>),});
+		} catch (error : any) {
+			toast.error('Error during cat creation', error.message);
 		} finally {
 			setIsCreating(false);
 		};
@@ -104,18 +102,20 @@ export default function Dashboard() {
 			{cats.length === 0 ? (
       			<p className="page text-xl font-normal">No cats found. Add a new cat?</p>
     		) : (
-      			<ul>
-        			{cats.map((cat) => {
-          				return <CardCat key={cat._id} _id={cat._id} name={cat.name} color={cat.color} onCatDelete={fetchCats} onCatUpdate={fetchCats} />;
-        			})}
-      			</ul>
+				<Reorder.Group axis="y" values={cats} onReorder={setCats}>
+					{cats.map((cat) => (
+						<Reorder.Item key={cat._id} value={cat}>
+							<CardCat key={cat._id} _id={cat._id} name={cat.name} color={cat.color} onCatDelete={fetchCats} onCatUpdate={fetchCats} />
+						</Reorder.Item>
+					))}
+				</Reorder.Group>
     		)}
 			<div className="flex-row-center-between gap-3">
 				<p className="text-lg">Add a new cat ?</p>
 				<Dialog {...Dialog}>
 						<DialogTrigger asChild>
 							<Button variant="outline" className="flex-col-center-center" disabled={isDeleting || isUpdating}>
-								{isCreating ? 
+								{isCreating ?
 									<Icons.spinner className="h-4 w-4 animate-spin" /> : 'Create'
 								}
 							</Button>

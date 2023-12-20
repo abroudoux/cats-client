@@ -1,4 +1,5 @@
 import { FC, useState } from 'react';
+import { toast } from 'sonner';
 
 import loading from '@/lib/loading';
 import useStore from "@/lib/store";
@@ -8,16 +9,12 @@ import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHe
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
-import { useToast } from '@/components/ui/use-toast';
-import { ToastAction } from '@/components/ui/toast';
 import { Icons } from '@/components/ui/icons';
 
 
 export const EditCat : FC<CatProps> = ( props ) => {
 
     const { isDeleting, isUpdating, isLoading, isCreating, setIsUpdating, setIsLoading } = useStore();
-
-    const { toast } = useToast();
 
     const [catData, setCatData] = useState({
         name : '',
@@ -46,7 +43,6 @@ export const EditCat : FC<CatProps> = ( props ) => {
                 console.log(catData)
             } else {
                 setIsUpdating(false);
-                toast({title: "Failed to update cat", action: (<ToastAction altText="Understand">OK</ToastAction>)});
             };
 
         } catch (error) {
@@ -73,16 +69,15 @@ export const EditCat : FC<CatProps> = ( props ) => {
             if (response.ok) {
                 setCatData({ ...catData, ...catDataUpdated });
                 props.onCatUpdate();
-                toast({ title: "Cat updated successfully", action: (<ToastAction altText="Understand">Undo</ToastAction>) });
+				toast.success('Cat updated successfully !');
             } else {
-                toast({ title: "Error during cat update", action: (<ToastAction altText="Understand">OK</ToastAction>) });
+				toast.error('Error during cat updating');
                 throw new Error('Failed to update cat');
             };
 
             console.log(catDataUpdated);
-        } catch (error) {
-            console.log("Error during cat update", error);
-            toast({title: "Error while cat update", description: "Try again", action: (<ToastAction altText="Understand">OK</ToastAction>),});
+        } catch (error: any) {
+            toast.error('Error during cat updating', error.message);
         } finally {
             setIsUpdating(false);
         };
