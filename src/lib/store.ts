@@ -11,6 +11,7 @@ interface Store {
     isLoading: boolean;
     isCreating: boolean;
     username: string;
+    error: boolean;
     signIn: () => void;
     signOut: () => void;
     setIsDeleting: (value: boolean) => void;
@@ -18,6 +19,7 @@ interface Store {
     setIsLoading: (value: boolean) => void;
     setIsCreating: (value: boolean) => void;
     setUsername: (value: string) => void;
+    setError: (value: boolean) => void;
 };
 
 const useStore = create<Store>((set) => ({
@@ -27,6 +29,7 @@ const useStore = create<Store>((set) => ({
     isLoading: false,
     isCreating: false,
     username: username ? JSON.parse(username) : '',
+    error: false,
     signIn: () => {
         set({ token: true });
         localStorage.setItem('token', JSON.stringify(true));
@@ -44,6 +47,7 @@ const useStore = create<Store>((set) => ({
         set({ username: value});
         localStorage.setItem('username', JSON.stringify(value));
     },
+    setError: (value: boolean) => set({ error: value }),
 }));
 
 
