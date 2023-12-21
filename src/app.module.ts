@@ -3,15 +3,10 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 
-import config from '@/config/keys';
-
 import { AppController } from '@/app.controller';
 import { AppService } from '@/app.service';
 import { CatsModule } from '@/cats/cats.module';
 import { UsersModule } from '@/users/users.module';
-import { JwtModule } from '@nestjs/jwt';
-import { ConfigService } from '@nestjs/config';
-
 
 
 @Module({
