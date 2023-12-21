@@ -3,7 +3,7 @@ import { DashboardIcon, GitHubLogoIcon, EnterIcon, ExitIcon } from '@radix-ui/re
 
 import useStore from "@/lib/store";
 
-import { ModeToggle } from '@/config/mode-toggle';
+import { ModeToggle } from '@/components/ui/mode-toggle';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
@@ -15,7 +15,7 @@ export default function Header() {
     return (
         <header className="w-full h-20 border-b-[1px] px-5 bg-background fixed top-0 flex-row-center-between">
             <Link to="/">
-                <h1 className="font-semibold text-4xl">Cats API</h1>
+                <h1 className="font-semibold text-4xl">cats-api</h1>
             </Link>
             <div className="flex flex-row items-center gap-4">
                 <DropdownMenu>

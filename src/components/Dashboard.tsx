@@ -1,10 +1,13 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { Reorder } from 'framer-motion';
 import { toast } from 'sonner';
 
 import loading from '@/lib/loading';
 import useStore from '@/lib/store';
 import { Cat } from '@/models/cat.model';
+
+import Loading from "@/pages/Loading";
+import Error from "@/pages/Error";
 
 import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
@@ -14,15 +17,11 @@ import { Button } from '@/components/ui/button';
 import { Icons } from '@/components/ui/icons';
 
 
-
 export default function Dashboard() {
 
-	const { isDeleting, isUpdating, isCreating, username, setIsCreating } = useStore();
-
+	const { isDeleting, isUpdating, isCreating, username, isLoading, setIsLoading, setIsCreating } = useStore();
 	const [error, setError] = useState();
 	const [cats, setCats] = useState<Cat[]>([]);
-	const [isLoading, setIsLoading] = React.useState<boolean>(false);
-
 	const [name, setName] = useState('');
 	const [color, setColor] = useState('');
 
@@ -46,7 +45,6 @@ export default function Dashboard() {
 				toast.success('Cat successfully created !');
 			} else {
 				toast.error('Failed to create cat');
-				throw new Error('Failed to create cat');
 			};
 
 		} catch (error : any) {
@@ -89,11 +87,11 @@ export default function Dashboard() {
 	}, []);
 
 	if (isLoading) {
-		return <div className="page">Loading ...</div>
+		return <Loading aria-busy="true" />
 	};
 
 	if (error) {
-		return <div className="page">Something went wrong! Please try again</div>
+		return <Error />
 	};
 
 	return (
