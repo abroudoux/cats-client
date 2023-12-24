@@ -1,8 +1,6 @@
 {
-  "name": "cats-nest-api",
+  "name": "api",
   "version": "1.0.0",
-  "description": "Cats API with Nest",
-  "author": "abroudoux",
   "scripts": {
     "build": "nest build",
     "dev": "nest start --watch --preserveWatchOutput",

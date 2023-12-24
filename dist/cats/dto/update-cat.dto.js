@@ -16,6 +16,7 @@ const create_cat_dto_1 = require("./create-cat.dto");
 class UpdateCatDto extends (0, mapped_types_1.PartialType)(create_cat_dto_1.CreateCatDto) {
     name;
     color;
+    image;
 }
 exports.UpdateCatDto = UpdateCatDto;
 __decorate([
@@ -28,5 +29,10 @@ __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], UpdateCatDto.prototype, "color", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], UpdateCatDto.prototype, "image", void 0);
 ;
 //# sourceMappingURL=update-cat.dto.js.map

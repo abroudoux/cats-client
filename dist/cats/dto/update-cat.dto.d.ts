@@ -3,5 +3,6 @@ declare const UpdateCatDto_base: import("@nestjs/mapped-types").MappedType<Parti
 export declare class UpdateCatDto extends UpdateCatDto_base {
     readonly name: string;
     readonly color: string;
+    readonly image: string;
 }
 export {};

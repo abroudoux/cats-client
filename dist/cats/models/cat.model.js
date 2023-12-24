@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 exports.CatsSchema = new mongoose.Schema({
     name: { type: String, required: true },
     color: { type: String, required: true },
+    image: { type: String, required: false },
 });
 ;
 //# sourceMappingURL=cat.model.js.map

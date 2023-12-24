@@ -103,7 +103,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"color\": \"Green\"\n}",
+							"raw": "{\n\t\"color\": \"Pink\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -111,13 +111,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/cats/6563c5ff1f422d7d59c5f9b3",
+							"raw": "{{base_url}}/cats/65667696699132b568b71219",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"cats",
-								"6563c5ff1f422d7d59c5f9b3"
+								"65667696699132b568b71219"
 							]
 						},
 						"description": "This is a PUT request and it is used to overwrite an existing piece of data. For instance, after you create an entity with a POST request, you may want to modify that later. You can do that using a PUT request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful PUT request typically returns a `200 OK`, `201 Created`, or `204 No Content` response code."
@@ -223,7 +223,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"name\": \"Add your name in the body\"\n}",
+							"raw": "{\n\t\"name\": \"Hugo\",\n    \"email\": \"hugo.budx@gmail.com\",\n    \"password\": \"azertyuiop\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -313,6 +313,71 @@
 							}
 						},
 						"url": {
+							"raw": "{{base_url}}/users/6567af5eb6339d944fe71c0a",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"6567af5eb6339d944fe71c0a"
+							]
+						},
+						"description": "This is a DELETE request, and it is used to delete data that was previously created via a POST request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful DELETE request typically returns a `200 OK`, `202 Accepted`, or `204 No Content` response code."
+					},
+					"response": []
+				},
+				{
+					"name": "deleteAllUsers",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "signUp",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Add your name in the body\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
 							"raw": "{{base_url}}/users",
 							"host": [
 								"{{base_url}}"
@@ -321,7 +386,40 @@
 								"users"
 							]
 						},
-						"description": "This is a DELETE request, and it is used to delete data that was previously created via a POST request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful DELETE request typically returns a `200 OK`, `202 Accepted`, or `204 No Content` response code."
+						"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+					},
+					"response": []
+				},
+				{
+					"name": "signIn",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "Arthur",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "ergogreu",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
 					},
 					"response": []
 				}
@@ -355,7 +453,7 @@
 		},
 		{
 			"key": "base_url",
-			"value": "http://localhost:9090"
+			"value": "http://localhost:8080/api"
 		}
 	]
 }
