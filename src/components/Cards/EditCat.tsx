@@ -19,6 +19,7 @@ export const EditCat : FC<CatProps> = ( props ) => {
     const [catData, setCatData] = useState({
         name : '',
         color : '',
+        image : '',
     });
 
     const [catDataUpdated, setCatDataUpdated] = useState({
@@ -28,34 +29,24 @@ export const EditCat : FC<CatProps> = ( props ) => {
 
     const handleSheetOpen = async () => {
 
-        setIsLoading(true);
+        setIsUpdating(true);
         await loading(1000);
 
         try {
             const response = await fetch(`api/cats/${props._id}`);
-
-            setIsUpdating(true);
-
-            if (response.ok) {
-                setIsLoading(false);
-                const catData = await response.json();
-                setCatData(catData);
-                console.log(catData)
-            } else {
-                setIsUpdating(false);
-            };
-
+            setIsLoading(false);
+            const catData = await response.json();
+            setCatData(catData);
         } catch (error) {
             console.error('Error fetching cat data', error);
         } finally {
             setIsUpdating(false);
-        }
+        };
     };
 
     const handleUpdate = async () => {
 
         setIsUpdating(true);
-        await loading(2000);
 
         try {
             const response = await fetch(`api/cats/${props._id}`, {
@@ -75,7 +66,6 @@ export const EditCat : FC<CatProps> = ( props ) => {
                 throw new Error('Failed to update cat');
             };
 
-            console.log(catDataUpdated);
         } catch (error: any) {
             toast.error('Error during cat updating', error.message);
         } finally {
@@ -84,25 +74,40 @@ export const EditCat : FC<CatProps> = ( props ) => {
 
     };
 
+    const handleUpdatecatImage = async () => {
+
+        setIsUpdating(true);
+
+        try {
+            const response = await fetch(`api/cats/${props._id}/update-image`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(catDataUpdated),
+            });
+
+            if (response.ok) {
+                setCatData({ ...catData, ...catDataUpdated });
+                props.onCatUpdate();
+				toast.success('Cat updated successfully !');
+            } else {
+				toast.error('Error during cat updating');
+                throw new Error('Failed to update cat');
+            };
+
+        } catch (error: any) {
+            toast.error('Error during cat image updating', error.message);
+        } finally {
+            setIsUpdating(false);
+        };
+    };
+
 
     return (
         <li className="cursor-pointer">
             <Sheet>
                 <SheetTrigger asChild>
-                    {/* <TooltipProvider>
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                            <Button variant="outline" size="icon" onClick={handleSheetOpen} disabled={isUpdating || isDeleting}>
-                                {isUpdating ?
-                                <Icons.spinner className="h-4 w-4 animate-spin" />  : '🔎'
-                                }
-                            </Button>
-                            </TooltipTrigger>
-                            <TooltipContent>
-                                <span>Modify</span>
-                            </TooltipContent>
-                        </Tooltip>
-                    </TooltipProvider> */}
                     <Button variant="outline" size="icon" onClick={handleSheetOpen} disabled={isUpdating || isDeleting || isLoading || isCreating}>
                         {isUpdating ?
                         <Icons.spinner className="h-4 w-4 animate-spin" />  : '🔎'
@@ -121,7 +126,7 @@ export const EditCat : FC<CatProps> = ( props ) => {
                             <Label htmlFor="name" className="text-right">
                                 Name
                             </Label>
-                            {isLoading ? 
+                            {isUpdating ? 
                                 <Icons.spinner className="mr-2 h-4 w-4 animate-spin" /> 
                                 :
                                 <Input id="name" className="col-span-3" defaultValue={catData.name} onChange={(e) => setCatDataUpdated({ ...catDataUpdated, name: e.target.value })}/>
@@ -131,10 +136,26 @@ export const EditCat : FC<CatProps> = ( props ) => {
                             <Label htmlFor="color" className="text-right">
                                 Color
                             </Label>
-                            {isLoading ? 
+                            {isUpdating ? 
                                 <Icons.spinner className="mr-2 h-4 w-4 animate-spin" /> 
                                 :
                                 <Input id="color" className="col-span-3" defaultValue={catData.color} onChange={(e) => setCatDataUpdated({ ...catDataUpdated, color: e.target.value })}/>
+                            }
+                        </div>
+                        <div className="w-full">
+                            {isUpdating ?
+                                <div className="w-full flex-row-center-center">
+                                    <Icons.spinner className="mr-4 h-4 w-4 animate-spin" /> 
+                                </div> 
+                                :
+                                <div className="flex-row-center-center w-full relative">
+                                    <img src={catData.image} alt="" className="rounded-lg" />
+                                    <Button variant="outline" className="absolute right-2 bottom-2" onClick={handleUpdatecatImage} disabled={isUpdating || isDeleting || isLoading || isCreating}>
+                                        {isUpdating ?
+                                            <Icons.spinner className="h-4 w-4 animate-spin" />  : 'New image'
+                                        }
+                                    </Button>
+                                </div>
                             }
                         </div>
                     </div>
@@ -144,7 +165,7 @@ export const EditCat : FC<CatProps> = ( props ) => {
                                 {isUpdating && (
                                     <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                                 )}
-                                {isUpdating ? 'Updating..' : 'Update'}
+                                {isUpdating ? 'Loading..' : 'Update'}
                             </Button>
                         </SheetClose>
                     </SheetFooter>

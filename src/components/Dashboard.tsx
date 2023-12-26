@@ -103,7 +103,7 @@ export default function Dashboard() {
 				<Reorder.Group axis="y" values={cats} onReorder={setCats}>
 					{cats.map((cat) => (
 						<Reorder.Item key={cat._id} value={cat}>
-							<CardCat key={cat._id} _id={cat._id} name={cat.name} color={cat.color} onCatDelete={fetchCats} onCatUpdate={fetchCats} />
+							<CardCat key={cat._id} _id={cat._id} name={cat.name} color={cat.color} image={cat.image} onCatDelete={fetchCats} onCatUpdate={fetchCats} />
 						</Reorder.Item>
 					))}
 				</Reorder.Group>

@@ -46,19 +46,6 @@ export const DeleteCat : FC<CatProps> = ( props ) => {
         <li className="cursor-pointer">
             <AlertDialog>
                 <AlertDialogTrigger asChild>
-                    {/* <TooltipProvider>
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <Button variant="outline" className="flex-col-center-center" size="icon" disabled={isDeleting || isUpdating}>
-                                    {isDeleting ?
-                                        <Icons.spinner className="h-4 w-4 animate-spin" /> : '❌'}
-                                </Button>
-                            </TooltipTrigger>
-                            <TooltipContent>
-                                <span>Delete</span>
-                            </TooltipContent>
-                        </Tooltip>
-                    </TooltipProvider> */}
                     <Button variant="outline" className="flex-col-center-center" size="icon" disabled={isDeleting || isUpdating || isLoading || isCreating}>
                         {isDeleting ?
                             <Icons.spinner className="h-4 w-4 animate-spin" /> : '❌'}

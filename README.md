@@ -1,1 +1,1 @@
-# catmmander - cats api
+# cats-client

@@ -2,6 +2,7 @@ export type CatProps = {
     _id : string;
     name : string;
     color : string;
+    image ? : string;
     onCatDelete : () => void;
     onCatUpdate : () => void;
 };
@@ -9,5 +10,6 @@ export type CatProps = {
 export interface Cat {
 	_id : string,
 	name : string,
-	color : string
+    image ? : string,
+	color : string,
 };
