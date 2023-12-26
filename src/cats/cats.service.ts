@@ -103,4 +103,53 @@ export class CatsService {
         return catUpdated;
     };
 
+    async updateCatImage(id: string): Promise<Cat> {
+        const isValidId = mongoose.isValidObjectId(id);
+
+        if (!isValidId) {
+            throw new BadRequestException('Enter a valid id');
+        };
+
+        const imageResponse = await fetch('https://api.thecatapi.com/v1/images/search', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'x-api-key': 'live_nqlZTA7eNb7RAu9dJrnRtAGG5Py32CAVv70LZAeel1BcyvOnR90YWmrQbR80dnWL',
+            },
+        });
+
+        if (imageResponse.ok) {
+            const catImageDataArray = await imageResponse.json();
+
+            if (Array.isArray(catImageDataArray) && catImageDataArray.length > 0) {
+                const firstImageData = catImageDataArray[0];
+
+                if (firstImageData && typeof firstImageData.url === 'string') {
+                    const catUpdated = await this.catModel.findByIdAndUpdate(
+                        id,
+                        { $set: { image: firstImageData.url } },
+                        { new: true }
+                    );
+
+                    if (!catUpdated) {
+                        throw new NotFoundException('Cat not found');
+                    };
+
+                    return catUpdated;
+
+                } else {
+                    console.error('Invalid response format from cat image API:', firstImageData);
+                    throw new BadRequestException('Failed to update cat image');
+                };
+
+            } else {
+                console.error('Empty or non-array response from cat image API:', catImageDataArray);
+                throw new BadRequestException('Failed to update cat image');
+            };
+
+        } else {
+            console.error('Failed to fetch cat image from API. Status:', imageResponse.status);
+            throw new BadRequestException('Failed to update cat image');
+        };
+    };
 };

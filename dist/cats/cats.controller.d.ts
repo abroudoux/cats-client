@@ -10,4 +10,5 @@ export declare class CatsController {
     createCat(createCatDto: CreateCatDto): Promise<Cat>;
     deleteCat(id: string): Promise<Cat>;
     updateCat(updateCatDto: UpdateCatDto, id: string): Promise<Cat>;
+    updateCatImage(id: string): Promise<Cat>;
 }

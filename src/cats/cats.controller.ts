@@ -41,4 +41,10 @@ export class CatsController {
         return this.catsService.updateCat(id, updateCatDto);
     };
 
+    // PUT /cats/:id/update-image
+    @Put(':id/update-image')
+    updateCatImage(@Param('id') id: string): Promise<Cat> {
+        return this.catsService.updateCatImage(id);
+    };
+
 };

@@ -43,6 +43,10 @@ let CatsController = class CatsController {
         return this.catsService.updateCat(id, updateCatDto);
     }
     ;
+    updateCatImage(id) {
+        return this.catsService.updateCatImage(id);
+    }
+    ;
 };
 exports.CatsController = CatsController;
 __decorate([
@@ -80,6 +84,13 @@ __decorate([
     __metadata("design:paramtypes", [update_cat_dto_1.UpdateCatDto, String]),
     __metadata("design:returntype", Promise)
 ], CatsController.prototype, "updateCat", null);
+__decorate([
+    (0, common_1.Put)(':id/update-image'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], CatsController.prototype, "updateCatImage", null);
 exports.CatsController = CatsController = __decorate([
     (0, common_1.Controller)('cats'),
     __metadata("design:paramtypes", [cats_service_1.CatsService])

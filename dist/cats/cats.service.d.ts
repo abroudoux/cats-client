@@ -9,4 +9,5 @@ export declare class CatsService {
     createCat(cat: CreateCatDto): Promise<Cat>;
     deleteCat(id: string): Promise<Cat | null>;
     updateCat(id: string, cat: Cat): Promise<Cat>;
+    updateCatImage(id: string): Promise<Cat>;
 }
